@@ -69,6 +69,7 @@ Pentru Vlad:
 
 
 Pentru Maria:
+
 -Ca manager de petshop, vreau să adaug și să actualizez informații despre animalele disponibile, pentru a le promova eficient către clienți. <br>
 -Ca manager de petshop, vreau să primesc cereri de adopție online, pentru a evalua rapid dacă clientul este potrivit pentru animal. <br>
 -Ca manager de petshop, vreau să public articole pe blog despre îngrijirea animalelor, pentru a educa clienții. <br>
