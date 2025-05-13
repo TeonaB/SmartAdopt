@@ -1,0 +1,74 @@
+-------------------------------------------------------------------------------------------
+PERSONAS
+-------------------------------------------------------------------------------------------
+
+Persona 1: 
+Client dornic să adopte un animal
+
+Nume: Ana
+Vârsta: 28
+Oraș: Cluj-Napoca
+Obiective:
+-Să găsească un animal de companie potrivit stilului ei de viață.
+-Să învețe cum să aibă grijă de animalul adoptat.
+-Să finalizeze procesul de adopție rapid și ușor.
+Frustrări:
+-Nu știe ce tip de animal i s-ar potrivi.
+-Procesul de adopție este complicat.
+-Nu are acces la sfaturi practice despre îngrijire.
+
+
+Persona 2:
+Client pasionat de animale
+
+Nume: Vlad
+Vârsta: 35
+Oraș: București
+Obiective:
+-Să adopte un animal.
+-Să interacționeze cu o comunitate de iubitori de animale.
+-Să aibă acces la informații detaliate despre animal.
+Frustrări:
+-Lipsa unui sistem de recomandare personalizat.
+-Nu poate filtra animalele după toate criteriile dorite.
+-Nu există o comunitate pentru iubitori de animale online.
+
+
+Persona 3: 
+Reprezentant PetShop
+
+Nume: Maria
+Vârsta: 40
+Oraș: Timișoara
+Obiective:
+-Să promoveze animalele disponibile către clienți potriviți.
+-Să simplifice gestionarea cererilor de adopție.
+-Să educe clienții despre responsabilitățile adopției.
+Frustrări:
+-Procesul de potrivire animal-client este consumator de timp.
+-Clienții renunță din cauza lipsei de informații clare.
+-Nu există o platformă centralizată pentru educarea clienților in domeniul animalelor.
+
+
+-------------------------------------------------------------------------------------------
+USER STORIES
+-------------------------------------------------------------------------------------------
+
+Pentru Ana:
+
+-Ca utilizator, vreau să completez un chestionar simplu, pentru a primi recomandări de animale potrivite mie.
+-Ca utilizator, vreau să citesc sfaturi despre îngrijirea animalelor pe blog, pentru a fi pregătită.
+-Ca utilizator, vreau să plasez o cerere de adopție online, pentru a evita drumurile inutile.
+
+
+Pentru Vlad:
+
+-Ca utilizator, vreau să primesc o listă cu top 5 animale recomandate pe baza preferințelor mele.
+-Ca utilizator, vreau să pot filtra animalele disponibile după specie, vârstă sau locație, pentru a găsi rapid ce îmi doresc.
+-Ca utilizator, vreau să interacționez cu alți iubitori de animale prin comentarii sau postări.
+
+
+Pentru Maria:
+-Ca manager de petshop, vreau să adaug și să actualizez informații despre animalele disponibile, pentru a le promova eficient către clienți.
+-Ca manager de petshop, vreau să primesc cereri de adopție online, pentru a evalua rapid dacă clientul este potrivit pentru animal.
+-Ca manager de petshop, vreau să public articole pe blog despre îngrijirea animalelor, pentru a educa clienții.
