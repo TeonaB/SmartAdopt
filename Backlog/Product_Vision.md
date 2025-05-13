@@ -1,5 +1,4 @@
-SMARTADOPT 
-
+# Product Vision pentru SmartAdopt
 
 PENTRU persoane care doresc să adopte animale și petshop-uri care promovează adopția <br>
 CARE au nevoie de un proces simplu si personalizat pentru a găsi și gestiona animalele potrivite
