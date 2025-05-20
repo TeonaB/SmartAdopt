@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool isClient = User.IsInRole("Client");
+    bool isAdmin = User.IsInRole("Admin");
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,12 +12,42 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SmartAdopt.styles.css" asp-append-version="true" />
+
+    <style>
+
+        /* Am facut navbarul mai transparent*/
+        .transparent-navbar {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .navbar-nav .nav-link:hover {
+            background-color: #c5c5c5;
+        }
+
+        /* Liniile de la header si footer mai transparente*/
+        .border-bottom {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .border-top {
+            border-top: 1px solid rgba(255, 255, 255, 0) !important;
+        }
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" >
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" >
+        .navbar-brand {
+            padding: 0 10px; /* Adjust padding as needed */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light transparent-navbar border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SmartAdopt</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src='~/images/logo.png' alt="Petshop Logo" width="60" height="60" />
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,11 +57,21 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (isClient == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Client</a>
+                            </li>
+                        }
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admins" asp-action="Index">Admin</a>
+                            </li>
+                        }
                     </ul>
-                    <partial name="_LoginPartial" />
+
+                    <partial name="_LoginPartial.cshtml" />
                 </div>
             </div>
         </nav>
@@ -37,9 +82,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted transparent-footer">
         <div class="container">
-            &copy; 2025 - SmartAdopt - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - SmartAdopt - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

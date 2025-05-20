@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SmartAdopt.Data;
 using SmartAdopt.Models;
 
 namespace SmartAdopt.Areas.Identity.Pages.Account
@@ -30,14 +31,17 @@ namespace SmartAdopt.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext db;
 
         public RegisterModel(
+            ApplicationDbContext context,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
+            db = context;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -71,6 +75,16 @@ namespace SmartAdopt.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -115,6 +129,9 @@ namespace SmartAdopt.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                user.nume = Input.FirstName;
+                user.prenume = Input.LastName;
+
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -123,7 +140,16 @@ namespace SmartAdopt.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+                    var client = new Client
+                    {
 
+                        ApplicationUserId = user.Id,
+                        idRaspChestionar = 0,
+                        CompletedProfile = false,
+                        nr_telefon = " ",
+                        adresa = " "
+                    };
+                    db.Clients.Add(client);
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

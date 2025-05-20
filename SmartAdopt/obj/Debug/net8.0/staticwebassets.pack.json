@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\login.png",
+      "PackagePath": "staticwebassets\\images\\login.png"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
       "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
