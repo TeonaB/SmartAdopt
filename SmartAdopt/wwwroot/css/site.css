@@ -1,5 +1,6 @@
 ﻿﻿html {
     font-size: 14px;
+    color: #FFF;
 }
 
 @media (min-width: 768px) {
@@ -20,6 +21,14 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
+}
+
+.body-auth {
+    color: white;
+}
+
+.body-auth * {
+     color: inherit;
 }
 
 .glass {

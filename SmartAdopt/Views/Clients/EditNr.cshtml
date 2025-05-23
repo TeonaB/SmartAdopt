@@ -1,0 +1,39 @@
+﻿@model SmartAdopt.Models.Client
+
+@{
+    ViewData["Title"] = "Edit Nr";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<h2 class="text-white">Edit Numar Telefon</h2>
+
+@using (Html.BeginForm(controllerName: "Clients", actionName: "EditNr", method: FormMethod.Post,
+   routeValues: new { id = Model.idClient }))
+{
+    @Html.LabelFor(m => m.nr_telefon, "Numar de telefon")
+    <br />
+    @Html.EditorFor(m => m.nr_telefon, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.nr_telefon, null, new { @class = "text-danger" })
+
+    @Html.HiddenFor(m => m.idRaspChestionar, new { Value = Model.idRaspChestionar })
+    @Html.HiddenFor(m => m.ApplicationUserId, new { Value = Model.ApplicationUserId })
+    @Html.HiddenFor(m => m.ApplicationUser, new { Value = Model.ApplicationUser })
+    @Html.HiddenFor(m => m.CompletedProfile, new { Value = Model.CompletedProfile })
+    @Html.HiddenFor(m => m.adresa, new { Value = Model.adresa })
+    <br />
+    <br />
+    <button type="submit" class="btn btn-primary">Save</button>
+}

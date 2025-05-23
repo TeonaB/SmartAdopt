@@ -52,5 +52,118 @@ namespace SmartAdopt.Controllers
             }
             return View(user);
         }
+
+        public async Task<IActionResult> EditNr()
+        {
+            var userId = _userManager.GetUserId(User);
+            var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == userId);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new ChallengeResult(); 
+            }
+            if (client == null)
+            {
+                return NotFound();
+            }
+            if (TempData.ContainsKey("ErrorMessage"))
+            {
+                ViewBag.Message = TempData["ErrorMessage"];
+                return View(client);
+            }
+            return View(client);
+        }
+
+        [HttpPost]
+        public IActionResult EditNr(int id, Client client)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(client);
+            }
+            else
+            {
+                Client newclient = db.Clients.Where(stu => stu.idClient == id).First();
+
+                if (newclient == null)
+                {
+                    return NotFound();
+                }
+
+                newclient.nr_telefon = client.nr_telefon;
+                if (!string.IsNullOrEmpty(client.nr_telefon) && !string.IsNullOrEmpty(client.adresa))
+                {
+                    newclient.CompletedProfile = true;
+                    db.SaveChanges();
+                }
+                if (!IsValidPhoneNumber(client.nr_telefon))
+                {
+                    TempData["ErrorMessage"] = "Ati introdus un nr de telefon gresit";
+                    return RedirectToAction("EditNr", "Clients");
+                }
+                bool IsValidPhoneNumber(string phoneNumber)
+                {
+                    if (string.IsNullOrWhiteSpace(phoneNumber))
+                        return false;
+
+                    return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^07\d{8}$");
+                }
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Updated successfully.";
+                return RedirectToAction("Index", "Clients");
+            }
+        }
+
+        public async Task<IActionResult> EditAdresa()
+        {
+            var userId = _userManager.GetUserId(User);
+            var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == userId);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return new ChallengeResult();
+            }
+            if (client == null)
+            {
+                return NotFound();
+            }
+            if (TempData.ContainsKey("ErrorMessage"))
+            {
+                ViewBag.Message = TempData["ErrorMessage"];
+                return View(client);
+            }
+            return View(client);
+        }
+
+        [HttpPost]
+        public IActionResult EditAdresa(int id, Client client)
+        {
+            if (ModelState.IsValid)
+            {
+                return View(client);
+            }
+            else
+            {
+                Client newclient = db.Clients.Where(stu => stu.idClient == id).First();
+
+                if (newclient == null)
+                {
+                    return NotFound();
+                }
+
+                newclient.adresa = client.adresa;
+                if (!string.IsNullOrEmpty(client.nr_telefon) && !string.IsNullOrEmpty(client.adresa))
+                {
+                    newclient.CompletedProfile = true;
+                    db.SaveChanges();
+                }
+                if (string.IsNullOrWhiteSpace(client.adresa))  
+                {
+                    TempData["ErrorMessage"] = "Ati introdus o adresa gresita";
+                    return RedirectToAction("EditAdresa", "Students");
+                }
+                db.SaveChanges();
+                TempData["SuccessMessage"] = "Updated successfully.";
+                return RedirectToAction("Index", "Clients");
+            }
+        }
     }
 }

@@ -34,7 +34,7 @@
     <div class="col-10">
         <section>
             <form id="account" method="post">
-                <h2>Welcome back!</h2>
+                <h2 class="text-dark">Welcome back!</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
@@ -58,8 +58,8 @@
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
                 </div>
-                <div>
-                    <p>
+                <div class="text-dark">
+                    <p >
                         <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                     </p>
                     <p>
