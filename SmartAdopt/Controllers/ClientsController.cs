@@ -7,7 +7,7 @@ using SmartAdopt.Models;
 
 namespace SmartAdopt.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Client")]
     public class ClientsController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

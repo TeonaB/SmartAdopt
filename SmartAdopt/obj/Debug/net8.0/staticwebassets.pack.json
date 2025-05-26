@@ -13,6 +13,14 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\WIN_20241127_15_17_38_Pro.jpg",
+      "PackagePath": "staticwebassets\\images\\WIN_20241127_15_17_38_Pro.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\caine1.jpg",
+      "PackagePath": "staticwebassets\\images\\caine1.jpg"
+    },
+    {
       "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\login.png",
       "PackagePath": "staticwebassets\\images\\login.png"
     },

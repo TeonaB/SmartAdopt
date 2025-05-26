@@ -1,0 +1,118 @@
+﻿@model SmartAdopt.Models.Animal
+
+@{
+    ViewData["Title"] = "Add New Animal";
+}
+
+<h2 class="text-center mb-4">Adaugati un nou animal</h2>
+
+<div class="container">
+    <form asp-action="AddAnimal" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="idAnimal" />
+
+        <div class="form-group">
+            <label asp-for="nume" class="control-label"></label>
+            <input asp-for="nume" class="form-control" />
+            <span asp-validation-for="nume" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="specie" class="control-label"></label>
+            <input asp-for="specie" class="form-control" />
+            <span asp-validation-for="specie" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="rasa" class="control-label"></label>
+            <input asp-for="rasa" class="form-control" />
+            <span asp-validation-for="rasa" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="descriere" class="control-label"></label>
+            <textarea asp-for="descriere" class="form-control"></textarea>
+            <span asp-validation-for="descriere" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="varsta" class="control-label"></label>
+            <input asp-for="varsta" class="form-control" type="number" min="0" max="20" />
+            <span asp-validation-for="varsta" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="nivel_energie" class="control-label"></label>
+            <input asp-for="nivel_energie" class="form-control" type="number" min="0" max="5" />
+            <span asp-validation-for="nivel_energie" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="marime" class="control-label"></label>
+            <input asp-for="marime" class="form-control" type="number" min="0" max="5" />
+            <span asp-validation-for="marime" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="nivel_adaptabilitate" class="control-label"></label>
+            <input asp-for="nivel_adaptabilitate" class="form-control" type="number" min="0" max="5" />
+            <span asp-validation-for="nivel_adaptabilitate" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="grupa_varsta" class="control-label"></label>
+            <input asp-for="grupa_varsta" class="form-control" type="number" min="0" max="5" />
+            <span asp-validation-for="grupa_varsta" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="nivel_atentie_necesara" class="control-label"></label>
+            <input asp-for="nivel_atentie_necesara" class="form-control" type="number" min="0" max="5" />
+            <span asp-validation-for="nivel_atentie_necesara" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="vaccinuri" class="control-label"></label>
+            <input asp-for="vaccinuri" class="form-control" />
+            <span asp-validation-for="vaccinuri" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="tip_alimentatie" class="control-label"></label>
+            <input asp-for="tip_alimentatie" class="form-control" />
+            <span asp-validation-for="tip_alimentatie" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="starea_sanatatii" class="control-label"></label>
+            <input asp-for="starea_sanatatii" class="form-control" />
+            <span asp-validation-for="starea_sanatatii" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ultima_verificare_vet" class="control-label"></label>
+            <input asp-for="ultima_verificare_vet" class="form-control" type="date" />
+            <span asp-validation-for="ultima_verificare_vet" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="pret" class="control-label"></label>
+            <input asp-for="pret" class="form-control" type="number" step="0.01" min="0.01" />
+            <span asp-validation-for="pret" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="imageFile" class="control-label">Upload Image</label>
+            <input type="file" name="imageFile" id="imageFile" class="form-control-file" accept="image/*" />
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Add Animal" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

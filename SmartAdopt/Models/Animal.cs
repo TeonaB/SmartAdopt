@@ -16,6 +16,7 @@ namespace SmartAdopt.Models
         public string rasa { get; set; }
         [Required(ErrorMessage = "Descrierea este obligatorie!")]
         public string descriere { get; set; }
+        public string ImagePath { get; set; }
         [Required(ErrorMessage = "Varsta este obligatorie!")]
         [Range(0, 20, ErrorMessage = "Introdu o valoarea reala")]
         public int varsta { get; set; }

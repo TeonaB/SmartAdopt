@@ -3,28 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\areas\\identity\\pages\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:areas\\identity\\pages\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\animals\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\animals\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\shared\\animalinfo.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\shared\\animalinfo.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\controllers\\clientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:controllers\\clientscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\admins\\addanimal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\admins\\addanimal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,84 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Register.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Register.cshtml",
-              "ViewState": "AgIAACcAAAAAAAAAAAAAABsAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-23T19:52:10.033Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAADwAAAAmAAAAAAAAAA==",
+              "Title": "AnimalInfo.cshtml",
+              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Shared\\AnimalInfo.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\AnimalInfo.cshtml",
+              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Shared\\AnimalInfo.cshtml",
+              "RelativeToolTip": "Views\\Shared\\AnimalInfo.cshtml",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAswKAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-23T19:51:15.577Z",
+              "WhenOpened": "2025-05-26T17:22:03.797Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Privacy.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Home\\Privacy.cshtml",
-              "RelativeDocumentMoniker": "Views\\Home\\Privacy.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Home\\Privacy.cshtml",
-              "RelativeToolTip": "Views\\Home\\Privacy.cshtml",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAIwGoAAAAGAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Animals\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Animals\\Index.cshtml",
+              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Animals\\Index.cshtml",
+              "RelativeToolTip": "Views\\Animals\\Index.cshtml",
+              "ViewState": "AgIAABkAAAAAAAAAAAAswC4AAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-23T19:44:36.765Z",
+              "WhenOpened": "2025-05-26T17:18:29.576Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAuwBIAAAAJAAAAAAAAAA==",
+              "Title": "AddAnimal.cshtml",
+              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\AddAnimal.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admins\\AddAnimal.cshtml",
+              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\AddAnimal.cshtml",
+              "RelativeToolTip": "Views\\Admins\\AddAnimal.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-23T19:33:04.742Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "site.css",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\css\\site.css",
-              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\css\\site.css",
-              "RelativeToolTip": "wwwroot\\css\\site.css",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAswB4AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2025-05-23T19:33:19.807Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ClientsController.cs",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Controllers\\ClientsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ClientsController.cs",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Controllers\\ClientsController.cs",
-              "RelativeToolTip": "Controllers\\ClientsController.cs",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAcwFwAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-20T14:50:35.196Z",
+              "WhenOpened": "2025-05-26T17:12:07.011Z",
               "EditorCaption": ""
             }
           ]

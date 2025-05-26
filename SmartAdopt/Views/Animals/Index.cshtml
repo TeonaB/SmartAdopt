@@ -1,0 +1,85 @@
+﻿<br />
+<h2 class="text-center">Faceti cunostinta cu prietenii vostri blanosi</h2>
+<br />
+
+
+@if (ViewBag.Message != null)
+{
+    <h2 class="bg-albastru p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+<!-- Add Animal button for admins -->
+@if (User.IsInRole("Admin"))
+{
+    <div class="d-flex justify-content-center mb-3">
+        <a class="btn btn-add-animal" href="/Admins/AddAnimal">Add Animal</a>
+    </div>
+}
+
+<!-- Search bar -->
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control"
+               placeholder="Search topics or keywords" name="search"
+               value="@ViewBag.SearchString">
+        <button class="btn btn-search" type="submit">
+            Search
+        </button>
+    </div>
+</form>
+
+
+<!--Afisarea fiecarui animal pe rand-->
+<div class="row">
+    @foreach (SmartAdopt.Models.Animal animal in ViewBag.Animals)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                @Html.Partial("AnimalInfo", animal)
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn bg-albastru border-dark" href="/Admins/DeleteAnimal/@animal.idAnimal">Stergere</a>
+                }
+                @if (User.IsInRole("Client"))
+                {
+                    <a class="btn bg-albastru border-dark" href="/Clients/AddAnimalComanda/@animal.idAnimal">Creeaza cerere adoptie</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .btn-add-animal {
+        background-color: #4da8da; /* Bright light blue */
+        color: white;
+        border: 1px solid #2e86ab; /* Slightly darker border for contrast */
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-add-animal:hover {
+            background-color: #66b3e0; /* Lighter blue on hover */
+            color: white;
+            text-decoration: none;
+        }
+
+    /* Search Button */
+    .btn-search {
+        background-color: #28a745; /* Bright green (Bootstrap's success color) */
+        color: white;
+        border: 1px solid #218838; /* Slightly darker green border */
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-search:hover {
+            background-color: #34c759; /* Lighter green on hover */
+            color: white;
+        }
+</style>
