@@ -212,7 +212,7 @@ namespace SmartAdopt.Controllers
             db.Comandas.Add(comanda);
             await db.SaveChangesAsync();
 
-            TempData["message"] = "Comanda a fost creată cu succes!";
+            TempData["message"] = "Comanda a fost creată cu succes";
             return RedirectToAction("Index", "Animals");
         }
 

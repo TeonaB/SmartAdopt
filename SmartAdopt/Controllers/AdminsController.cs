@@ -87,7 +87,7 @@ namespace SmartAdopt.Controllers
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit.";
+                TempData["message"] = "Animalul nu a fost găsit";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Animals");
             }
@@ -102,7 +102,7 @@ namespace SmartAdopt.Controllers
         {
             if (id != animal.idAnimal)
             {
-                TempData["message"] = "ID-ul animalului nu corespunde.";
+                TempData["message"] = "ID-ul animalului nu corespunde";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Animals");
             }
@@ -110,7 +110,7 @@ namespace SmartAdopt.Controllers
             var existingAnimal = await db.Animals.AsNoTracking().FirstOrDefaultAsync(a => a.idAnimal == id);
             if (existingAnimal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit.";
+                TempData["message"] = "Animalul nu a fost găsit";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Animals");
             }
@@ -146,12 +146,12 @@ namespace SmartAdopt.Controllers
             {
                 db.Update(animal);
                 await db.SaveChangesAsync();
-                TempData["message"] = "Animalul a fost actualizat cu succes.";
+                TempData["message"] = "Animalul a fost actualizat cu succes";
                 TempData["messageType"] = "success";
             }
             catch (DbUpdateException)
             {
-                TempData["message"] = "A apărut o eroare la actualizarea animalului.";
+                TempData["message"] = "A apărut o eroare la actualizarea animalului";
                 TempData["messageType"] = "error";
             }
             return RedirectToAction("Index", "Animals");
@@ -164,7 +164,7 @@ namespace SmartAdopt.Controllers
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit.";
+                TempData["message"] = "Animalul nu a fost găsit";
                 return RedirectToAction("Index", "Animals");
             }
 
@@ -178,9 +178,9 @@ namespace SmartAdopt.Controllers
 
                 if (hasNonRejectedOrders)
                 {
-                    TempData["message"] = "Animalul nu poate fi șters deoarece are comenzi asociate care nu sunt respinse.";
+                    TempData["message"] = "Animalul nu poate fi șters deoarece are comenzi asociate care nu sunt respinse";
                     TempData["messageType"] = "warning";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Animals");
                 }
                 else
                 {
@@ -193,7 +193,7 @@ namespace SmartAdopt.Controllers
                 db.Animals.Remove(animal);
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Animalul a fost șters cu succes.";
+                TempData["message"] = "Animalul a fost șters cu succes";
             }
             catch (Exception ex)
             {
@@ -209,7 +209,7 @@ namespace SmartAdopt.Controllers
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit.";
+                TempData["message"] = "Animalul nu a fost găsit";
                 return RedirectToAction("Index", "Animals");
             }
 
@@ -227,7 +227,7 @@ namespace SmartAdopt.Controllers
                 db.Animals.Remove(animal);
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Animalul a fost adoptat cu succes.";
+                TempData["message"] = "Animalul a fost adoptat cu succes";
             }
             catch (Exception ex)
             {
@@ -242,8 +242,8 @@ namespace SmartAdopt.Controllers
             var orders = await db.Comandas
                 .Include(c => c.Animal)
                 .Include(c => c.Client)
-                .ThenInclude(cl => cl.ApplicationUser) // Load the ApplicationUser
-                .OrderByDescending(c => c.data_comenzii) // Newest to oldest
+                .ThenInclude(cl => cl.ApplicationUser) 
+                .OrderByDescending(c => c.data_comenzii) 
                 .ToListAsync();
 
             var acceptedOrders = orders
@@ -268,7 +268,7 @@ namespace SmartAdopt.Controllers
             var order = await db.Comandas.FindAsync(id);
             if (order == null)
             {
-                TempData["message"] = "Comanda nu a fost găsită.";
+                TempData["message"] = "Comanda nu a fost găsită";
                 TempData["messageType"] = "error";
                 return RedirectToAction("ShowOrders");
             }
@@ -277,7 +277,7 @@ namespace SmartAdopt.Controllers
             db.Update(order);
             await db.SaveChangesAsync();
 
-            TempData["message"] = "Comanda a fost acceptată cu succes!";
+            TempData["message"] = "Comanda a fost acceptată cu succes";
             TempData["messageType"] = "success";
             return RedirectToAction("ShowOrders");
         }
@@ -290,7 +290,7 @@ namespace SmartAdopt.Controllers
             var order = await db.Comandas.FindAsync(id);
             if (order == null)
             {
-                TempData["message"] = "Comanda nu a fost găsită.";
+                TempData["message"] = "Comanda nu a fost găsită";
                 TempData["messageType"] = "error";
                 return RedirectToAction("ShowOrders");
             }
@@ -299,9 +299,116 @@ namespace SmartAdopt.Controllers
             db.Update(order);
             await db.SaveChangesAsync();
 
-            TempData["message"] = "Comanda a fost respinsă.";
+            TempData["message"] = "Comanda a fost respinsă";
             TempData["messageType"] = "warning";
             return RedirectToAction("ShowOrders");
+        }
+
+        public IActionResult AddPostare()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddPostare(Postare postare)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                postare.ApplicationUserId = user.Id;
+                // Set the post date to now
+                postare.data_postarii = DateTime.Now;
+
+                db.Add(postare);
+                await db.SaveChangesAsync();
+                TempData["message"] = "Postarea a fost adăugată cu succes";
+                return RedirectToAction("Index", "Postares");
+            }
+            catch (Exception)
+            {
+                TempData["message"] = "A apărut o eroare la adăugarea postării";
+                TempData["messageType"] = "error";
+            }
+            return RedirectToAction("Index", "Postares");
+        }
+
+        public async Task<IActionResult> DeletePostare(int id)
+        {
+            try
+            {
+                var postare = await db.Postares.FindAsync(id);
+                if (postare == null)
+                {
+                    TempData["message"] = "Postarea nu a fost găsită";
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("Index", "Postares");
+                }
+
+                db.Postares.Remove(postare);
+                await db.SaveChangesAsync();
+
+                TempData["message"] = "Postarea a fost ștearsă cu succes";
+                TempData["messageType"] = "success";
+            }
+            catch (Exception)
+            {
+                TempData["message"] = "A apărut o eroare la ștergerea postării";
+                TempData["messageType"] = "error";
+            }
+
+            return RedirectToAction("Index", "Postares");
+        }
+
+        public async Task<IActionResult> EditPostare(int id)
+        {
+            var postare = await db.Postares.FindAsync(id);
+            if (postare == null)
+            {
+                TempData["message"] = "Postarea nu a fost găsită";
+                TempData["messageType"] = "error";
+                return RedirectToAction("Index", "Postares");
+            }
+            return View(postare);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPostare(int id, Postare postare)
+        {
+            if (id != postare.idPostare)
+            {
+                TempData["message"] = "ID-ul postării nu se potrivește";
+                TempData["messageType"] = "error";
+                return RedirectToAction("Index", "Postares");
+            }
+            try
+            {
+                var existingPostare = await db.Postares.FindAsync(id);
+                if (existingPostare == null)
+                {
+                    TempData["message"] = "Postarea nu a fost găsită";
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("Index", "Postares");
+                }
+
+                existingPostare.titlu = postare.titlu;
+                existingPostare.descriere = postare.descriere;
+
+                db.Update(existingPostare);
+                await db.SaveChangesAsync();
+
+                TempData["message"] = "Postarea a fost actualizată cu succes";
+                TempData["messageType"] = "success";
+                return RedirectToAction("Index", "Postares");
+            }
+            catch (Exception)
+            {
+                TempData["message"] = "A apărut o eroare la actualizarea postării";
+                TempData["messageType"] = "error";
+            }
+
+            return View(postare);
         }
     }
 }

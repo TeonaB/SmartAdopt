@@ -38,6 +38,16 @@ namespace SmartAdopt.Data
                 .WithMany()
                 .HasForeignKey(c => c.ApplicationUserId);
 
+            modelBuilder.Entity<Postare>()
+                .HasOne(p => p.ApplicationUser)
+                .WithMany(u => u.Postares)
+                .HasForeignKey(p => p.ApplicationUserId);
+
+            modelBuilder.Entity<Comentariu>()
+                .HasOne(c => c.Postare)
+                .WithMany(p => p.Comentarius)
+                .HasForeignKey(c => c.idPostare);
+
             base.OnModelCreating(modelBuilder);
 
         }

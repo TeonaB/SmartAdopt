@@ -1,0 +1,200 @@
+﻿@if (ViewBag.Message != null)
+{
+    <div class="alert-container mb-5">
+        <div class="alert alert-custom d-flex align-items-center justify-content-between rounded-3 p-3"
+             role="alert">
+            <div class="d-flex align-items-center">
+                @if (ViewBag.MessageType == "success")
+                {
+                    <i class="bi bi-check-circle-fill me-2 text-success"></i>
+                }
+                else if (ViewBag.MessageType == "error")
+                {
+                    <i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i>
+                }
+                else
+                {
+                    <i class="bi bi-info-circle-fill me-2 text-info"></i>
+                }
+                <span class="message-text">@ViewBag.Message</span>
+            </div>
+        </div>
+    </div>
+}
+
+<div class="title-wrapper mb-4">
+    <h2 class="text-center text-white fw-bold">
+        Bine ați venit la <span class="highlight-coral">Blogul</span> nostru
+    </h2>
+</div>
+
+@if (User.IsInRole("Admin"))
+{
+    <div class="d-flex justify-content-center mb-3">
+        <a class="btn btn-add-postare" href="/Admins/AddPostare">Adaugare Postare</a>
+    </div>
+}
+
+<!-- Search bar -->
+<form method="GET">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search topics or keywords" name="search" value="@ViewBag.SearchString">
+        <button class="btn btn-search" type="submit">
+            Search
+        </button>
+    </div>
+</form>
+
+<div class="row">
+    @foreach (SmartAdopt.Models.Postare postare in ViewBag.Postari)
+    {
+        <div class="postare-wrapper mb-5">
+            <!-- Added wrapper for spacing -->
+            <partial name="PostareInfo" model="postare" />
+            <div class="postare-buttons d-flex gap-2">
+                <!-- Buttons container -->
+                <a class="btn btn-primary border-dark" href="/Postares/Show/@postare.idPostare">
+                    <i class="bi bi-pencil-square"></i> Vizualizare postare
+                </a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="btn-group">
+                        <a class="btn btn-danger border-dark" href="/Admins/DeletePostare/@postare.idPostare">Ștergere</a>
+                        <a class="btn btn-success border-dark" href="/Admins/EditPostare/@postare.idPostare">Editare</a>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+
+    .alert-container {
+        position: relative;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .alert-custom {
+        background-color: #f8f9fa; /* Light gray background */
+        border: 1px solid #dee2e6;
+        color: #333; /* Dark text for readability */
+        font-size: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+        .alert-custom:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+    .message-text {
+        font-weight: 500;
+    }
+
+    .title-wrapper {
+        padding: 15px;
+        text-align: center; /* Ensure centering */
+    }
+
+    .highlight-coral {
+        color: #ff6f61; /* Coral color */
+    }
+
+    .main-container-dark {
+        background-color: #fafafa !important; /* Updated to light background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #333;
+    }
+
+    .postare-wrapper {
+        margin-bottom: 40px; /* Space before the next post */
+    }
+
+    .postare-buttons {
+        margin-top: 0; /* Remove space between PostareInfo and buttons */
+    }
+
+    .btn-group .btn {
+        margin-right: 5px; /* Spacing between buttons in group */
+    }
+
+        .btn-group .btn:last-child {
+            margin-right: 0; /* Remove margin from last button */
+        }
+
+    /* Search Button */
+    .btn-search {
+        background-color: #4CAF50; /* Updated to match your green theme */
+        color: white;
+        border: 1px solid #4CAF50;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-search:hover {
+            background-color: #45a049; /* Darker green on hover */
+            color: white;
+        }
+
+    .btn-add-postare {
+        background-color: #4CAF50; /* Updated to match your green theme */
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #ffffff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .btn-add-postare:hover {
+            background-color: #45a049;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+    .btn-primary {
+        background-color: #4CAF50; /* Green to match theme */
+        border-color: #4CAF50;
+        color: #ffffff;
+        border-radius: 6px;
+    }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+        }
+
+    .btn-danger {
+        background-color: #ff8780; /* Light coral for delete */
+        border-color: #ff8780;
+        color: #ffffff;
+        border-radius: 6px;
+    }
+
+        .btn-danger:hover {
+            background-color: #ff6f61;
+            border-color: #ff6f61;
+        }
+
+    .btn-success {
+        background-color: #4CAF50; /* Green for edit */
+        border-color: #4CAF50;
+        color: #ffffff;
+        border-radius: 6px;
+    }
+
+        .btn-success:hover {
+            background-color: #45a049;
+            border-color: #45a049;
+        }
+</style>

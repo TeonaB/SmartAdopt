@@ -1,0 +1,65 @@
+﻿@model SmartAdopt.Models.Postare
+
+<div class="postare-card mb-4">
+    <div class="card-header">
+        <h5 class="card-title mb-0">
+            <span class="title-decor">@Model.titlu</span>
+        </h5>
+        <small class="text-muted">
+            Postat de @(Model.ApplicationUser?.nume ?? "Utilizator necunoscut") pe @Model.data_postarii.ToString("dd MMM yyyy, HH:mm")
+        </small>
+    </div>
+    <div class="card-body">
+        <p class="card-text">@Model.descriere</p>
+    </div>
+</div>
+
+<style>
+    .postare-card {
+        background-color: #f9f1ef; /* Soft peach background */
+        border-radius: 10px; /* Slightly larger radius for a softer look */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Lighter, friendlier shadow */
+        color: #444; /* Darker text for contrast */
+        transition: all 0.3s ease; /* Smooth hover effect */
+    }
+
+        .postare-card:hover {
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+
+    .card-header {
+        background: linear-gradient(90deg, #ffccbc, #ffab91); /* Warm coral gradient */
+        border-bottom: 1px solid #ffccbc; /* Matching border */
+        padding: 12px 15px; /* Slightly more padding */
+        border-radius: 10px 10px 0 0; /* Rounded top corners */
+    }
+
+    .title-decor {
+        font-size: 1.3rem; /* Slightly larger for emphasis */
+        color: #ffffff; /* White text on gradient */
+        font-weight: 600; /* Bold for prettiness */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    }
+
+    .card-body {
+        padding: 15px;
+        background-color: #ffffff; /* White body for contrast */
+        border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+    }
+
+    .text-muted {
+        color: #777 !important; /* Softer muted color */
+    }
+
+    .btn-primary {
+        background-color: #4CAF50; /* Green to match your theme */
+        border-color: #4CAF50;
+        border-radius: 6px; /* Rounded button */
+    }
+
+        .btn-primary:hover {
+            background-color: #45a049; /* Darker green on hover */
+            border-color: #45a049;
+        }
+</style>
