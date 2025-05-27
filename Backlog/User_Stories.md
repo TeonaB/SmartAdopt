@@ -64,7 +64,7 @@ Pentru Ana:
 Pentru Vlad:
 
 -Ca utilizator, vreau să primesc o listă cu top 5 animale recomandate pe baza preferințelor mele. <br>
--Ca utilizator, vreau să pot filtra animalele disponibile după specie, vârstă sau locație, pentru a găsi rapid ce îmi doresc. <br>
+-Ca utilizator, vreau să pot filtra animalele disponibile după specie, vârstă etc. , pentru a găsi rapid ce îmi doresc. <br>
 -Ca utilizator, vreau să interacționez cu alți iubitori de animale prin comentarii sau postări. <br>
 
 
