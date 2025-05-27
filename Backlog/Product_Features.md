@@ -3,7 +3,7 @@
 1. Chestionar de recomandare personalizat: 
 Generează o listă cu top 5 animale potrivite, bazată pe răspunsurile utilizatorului la un chestionar interactiv despre preferințe și stil de viață. <br>
 2. Filtrare avansată a animalelor: 
-Permite utilizatorilor să filtreze animalele disponibile după criterii precum specie, vârstă, mărime, locație. <br>
+Permite utilizatorilor să filtreze animalele disponibile după criterii precum specie, vârstă, mărime. <br>
 3. Sistem de cereri de adopție online: 
 Oferă un formular simplu pentru plasarea cererilor de adopție, cu detalii trimise instantaneu către petshop pentru procesare rapidă. <br>
 4. Blog educațional interactiv: 
