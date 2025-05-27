@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartAdopt.Data;
 using SmartAdopt.Models;
+using System.Linq;
 
 namespace SmartAdopt.Controllers
 {
@@ -33,7 +34,7 @@ namespace SmartAdopt.Controllers
             var admin = await db.Admins.FirstOrDefaultAsync(s => s.ApplicationUserId == user.Id);
 
             ViewBag.AnimalCount = await db.Animals.CountAsync();
-            ViewBag.ComenziCount = await db.Comandas.CountAsync();
+            ViewBag.ComenziCount = await db.Comandas.Where(c => c.stare != "Respinsă").CountAsync();
 
             return View(user);
         }
@@ -54,12 +55,12 @@ namespace SmartAdopt.Controllers
                 // Generam calea de stocare a fisierului
                 var storagePath = Path.Combine(
                 _env.WebRootPath, // Preluam calea folderului wwwroot
-                "images", // Adaugam calea folderului images
+                "images/animals", // Adaugam calea folderului images
                 imageFile.FileName // Numele fisierului
                 );
 
                 // Generam calea de afisare a fisierului care va fi stocata in baza de date
-                databaseFileName = "/images/" + imageFile.FileName;
+                databaseFileName = "/images/animals/" + imageFile.FileName;
 
                 // Uploadam fisierul la calea de storage
                 using (var fileStream = new FileStream(storagePath, FileMode.Create))
@@ -81,6 +82,82 @@ namespace SmartAdopt.Controllers
 
         }
 
+        public async Task<IActionResult> EditAnimal(int id)
+        {
+            var animal = await db.Animals.FindAsync(id);
+            if (animal == null)
+            {
+                TempData["message"] = "Animalul nu a fost găsit.";
+                TempData["messageType"] = "error";
+                return RedirectToAction("Index", "Animals");
+            }
+
+            return View(animal);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAnimal(int id, Animal animal, IFormFile ImagePath)
+        {
+            if (id != animal.idAnimal)
+            {
+                TempData["message"] = "ID-ul animalului nu corespunde.";
+                TempData["messageType"] = "error";
+                return RedirectToAction("Index", "Animals");
+            }
+
+            var existingAnimal = await db.Animals.AsNoTracking().FirstOrDefaultAsync(a => a.idAnimal == id);
+            if (existingAnimal == null)
+            {
+                TempData["message"] = "Animalul nu a fost găsit.";
+                TempData["messageType"] = "error";
+                return RedirectToAction("Index", "Animals");
+            }
+
+            if (ImagePath != null && ImagePath.Length > 0)
+            {
+                // Generam calea de stocare a fisierului
+                var storagePath = Path.Combine(
+                _env.WebRootPath, // Preluam calea folderului wwwroot
+                "images/animals", // Adaugam calea folderului images
+                ImagePath.FileName // Numele fisierului
+                );
+
+                // Generam calea de afisare a fisierului care va fi stocata in baza de date
+                databaseFileName = "/images/animals/" + ImagePath.FileName;
+
+                // Uploadam fisierul la calea de storage
+                using (var fileStream = new FileStream(storagePath, FileMode.Create))
+                {
+                    await ImagePath.CopyToAsync(fileStream);
+                }
+
+                // Update the animal's imageUrl with the new path
+                animal.ImagePath = databaseFileName;
+            }
+            else
+            {
+                // No new image uploaded; retain the existing imageUrl
+                animal.ImagePath = existingAnimal.ImagePath;
+            }
+
+            try
+            {
+                db.Update(animal);
+                await db.SaveChangesAsync();
+                TempData["message"] = "Animalul a fost actualizat cu succes.";
+                TempData["messageType"] = "success";
+            }
+            catch (DbUpdateException)
+            {
+                TempData["message"] = "A apărut o eroare la actualizarea animalului.";
+                TempData["messageType"] = "error";
+            }
+            return RedirectToAction("Index", "Animals");
+        }
+
+
         public async Task<IActionResult> DeleteAnimal(int id)
         {
             
@@ -91,11 +168,24 @@ namespace SmartAdopt.Controllers
                 return RedirectToAction("Index", "Animals");
             }
 
-            bool hasOrders = await db.Comandas.AnyAsync(c => c.idAnimal == id);
-            if (hasOrders)
+            var orders = await db.Comandas
+                .Where(c => c.idAnimal == id)
+                .ToListAsync();
+
+            if (orders.Any())
             {
-                TempData["message"] = "Animalul nu poate fi șters deoarece are comenzi asociate.";
-                return RedirectToAction("Index", "Animals");
+                var hasNonRejectedOrders = orders.Any(c => c.stare != "Respinsă");
+
+                if (hasNonRejectedOrders)
+                {
+                    TempData["message"] = "Animalul nu poate fi șters deoarece are comenzi asociate care nu sunt respinse.";
+                    TempData["messageType"] = "warning";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    db.Comandas.RemoveRange(orders);
+                }
             }
 
             try
@@ -111,6 +201,107 @@ namespace SmartAdopt.Controllers
             }
 
             return RedirectToAction("Index", "Animals");
+        }
+
+        public async Task<IActionResult> DeleteAnimalTotal(int id)
+        {
+
+            var animal = await db.Animals.FindAsync(id);
+            if (animal == null)
+            {
+                TempData["message"] = "Animalul nu a fost găsit.";
+                return RedirectToAction("Index", "Animals");
+            }
+
+            var orders = await db.Comandas
+                .Where(c => c.idAnimal == id)
+                .ToListAsync();
+
+            if (orders.Any())
+            {
+                db.Comandas.RemoveRange(orders);
+            }
+
+            try
+            {
+                db.Animals.Remove(animal);
+                await db.SaveChangesAsync();
+
+                TempData["message"] = "Animalul a fost adoptat cu succes.";
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = "A apărut o eroare la ștergerea animalului: " + ex.Message;
+            }
+
+            return RedirectToAction("Index", "Animals");
+        }
+
+        public async Task<IActionResult> ShowOrders()
+        {
+            var orders = await db.Comandas
+                .Include(c => c.Animal)
+                .Include(c => c.Client)
+                .ThenInclude(cl => cl.ApplicationUser) // Load the ApplicationUser
+                .OrderByDescending(c => c.data_comenzii) // Newest to oldest
+                .ToListAsync();
+
+            var acceptedOrders = orders
+                .Where(c => c.stare == "Finalizată")
+                .ToList();
+
+            var pendingOrders = orders
+                .Where(c => c.stare == "În așteptare")
+                .ToList();
+
+            ViewData["AcceptedOrders"] = acceptedOrders;
+            ViewData["PendingOrders"] = pendingOrders;
+
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcceptOrder(int id)
+        {
+            var order = await db.Comandas.FindAsync(id);
+            if (order == null)
+            {
+                TempData["message"] = "Comanda nu a fost găsită.";
+                TempData["messageType"] = "error";
+                return RedirectToAction("ShowOrders");
+            }
+
+            order.stare = "Finalizată";
+            db.Update(order);
+            await db.SaveChangesAsync();
+
+            TempData["message"] = "Comanda a fost acceptată cu succes!";
+            TempData["messageType"] = "success";
+            return RedirectToAction("ShowOrders");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RejectOrder(int id)
+        {
+            var order = await db.Comandas.FindAsync(id);
+            if (order == null)
+            {
+                TempData["message"] = "Comanda nu a fost găsită.";
+                TempData["messageType"] = "error";
+                return RedirectToAction("ShowOrders");
+            }
+
+            order.stare = "Respinsă";
+            db.Update(order);
+            await db.SaveChangesAsync();
+
+            TempData["message"] = "Comanda a fost respinsă.";
+            TempData["messageType"] = "warning";
+            return RedirectToAction("ShowOrders");
         }
     }
 }

@@ -1,0 +1,281 @@
+﻿@* View: Views/Admin/ShowOrders.cshtml *@
+@{
+    ViewData["Title"] = "Gestionare Comenzi";
+    var acceptedOrders = ViewData["AcceptedOrders"] as List<SmartAdopt.Models.Comanda>;
+    var pendingOrders = ViewData["PendingOrders"] as List<SmartAdopt.Models.Comanda>;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<div class="title-wrapper mb-4">
+    <h2 class="text-center text-white fw-bold">Gestionare Comenzi</h2>
+</div>
+
+<div class="container main-container">
+    <!-- Display TempData message -->
+    @if (TempData["message"] != null)
+    {
+        <div class="alert-container mb-4">
+            <div class="alert alert-custom d-flex align-items-center justify-content-between rounded-3 p-3" role="alert">
+                <div class="d-flex align-items-center">
+                    @if (TempData["messageType"]?.ToString() == "success")
+                    {
+                        <i class="bi bi-check-circle-fill me-2 text-success"></i>
+                    }
+                    else if (TempData["messageType"]?.ToString() == "error")
+                    {
+                        <i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i>
+                    }
+                    else if (TempData["messageType"]?.ToString() == "warning")
+                    {
+                        <i class="bi bi-exclamation-circle-fill me-2 text-warning"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-info-circle-fill me-2 text-info"></i>
+                    }
+                    <span class="message-text">@TempData["message"]</span>
+                </div>
+                <button type="button" class="btn-close" aria-label="Close" onclick="this.parentElement.style.display='none';"></button>
+            </div>
+        </div>
+    }
+
+    <!-- Accepted Orders Section -->
+    <h3 class="text-dark mb-3">Comenzi Acceptate</h3>
+    @if (acceptedOrders == null || !acceptedOrders.Any())
+    {
+        <div class="text-center p-4 bg-light rounded-3 shadow-sm mb-4">
+            <i class="bi bi-info-circle text-info fs-3"></i>
+            <p class="mb-0 text-muted">Nu există comenzi acceptate.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive mb-5">
+            <table class="table custom-table rounded-3 overflow-hidden">
+                <thead>
+                    <tr>
+                        <th scope="col" class="table-header"><i class="bi bi-paw"></i> Animal</th>
+                        <th scope="col" class="table-header"><i class="bi bi-person"></i> Client</th>
+                        <th scope="col" class="table-header"><i class="bi bi-calendar-date"></i> Data Comenzii</th>
+                        <th scope="col" class="table-header"><i class="bi bi-clock-history"></i> Stare</th>
+                        <th scope="col" class="table-header"><i class="bi bi-cash"></i> Total Plată</th>
+                        <th scope="col" class="table-header"><i class="bi bi-credit-card"></i> Metoda Plății</th>
+                        <th scope="col" class="table-header"><i class="bi bi-pencil"></i> Motivație</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comanda in acceptedOrders)
+                    {
+                        <tr class="table-success">
+                            <td class="align-middle">
+                                @if (comanda.Animal != null)
+                                {
+                                    @comanda.Animal.nume
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Animal indisponibil</span>
+                                }
+                            </td>
+                            <td class="align-middle">
+                                @if (comanda.Client != null)
+                                {
+                                    @comanda.Client.ApplicationUser.nume
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Client indisponibil</span>
+                                }
+                            </td>
+                            <td class="align-middle">@comanda.data_comenzii.ToString("d")</td>
+                            <td class="align-middle">@comanda.stare</td>
+                            <td class="align-middle">@comanda.total_plata RON</td>
+                            <td class="align-middle">@comanda.metoda_platii</td>
+                            <td class="align-middle">@comanda.motivatie</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <!-- Pending Orders Section -->
+    <h3 class="text-dark mb-3">Comenzi în Așteptare</h3>
+    @if (pendingOrders == null || !pendingOrders.Any())
+    {
+        <div class="text-center p-4 bg-light rounded-3 shadow-sm">
+            <i class="bi bi-info-circle text-info fs-3"></i>
+            <p class="mb-0 text-muted">Nu există comenzi în așteptare.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table custom-table rounded-3 overflow-hidden">
+                <thead>
+                    <tr>
+                        <th scope="col" class="table-header"><i class="bi bi-paw"></i> Animal</th>
+                        <th scope="col" class="table-header"><i class="bi bi-person"></i> Client</th>
+                        <th scope="col" class="table-header"><i class="bi bi-calendar-date"></i> Data Comenzii</th>
+                        <th scope="col" class="table-header"><i class="bi bi-clock-history"></i> Stare</th>
+                        <th scope="col" class="table-header"><i class="bi bi-cash"></i> Total Plată</th>
+                        <th scope="col" class="table-header"><i class="bi bi-credit-card"></i> Metoda Plății</th>
+                        <th scope="col" class="table-header"><i class="bi bi-pencil"></i> Motivație</th>
+                        <th scope="col" class="table-header"><i class="bi bi-gear"></i> Acțiuni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comanda in pendingOrders)
+                    {
+                        <tr class="table-warning">
+                            <td class="align-middle">
+                                @if (comanda.Animal != null)
+                                {
+                                    @comanda.Animal.nume
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Animal indisponibil</span>
+                                }
+                            </td>
+                            <td class="align-middle">
+                                @if (comanda.Client != null)
+                                {
+                                    @comanda.Client.ApplicationUser.nume
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Client indisponibil</span>
+                                }
+                            </td>
+                            <td class="align-middle">@comanda.data_comenzii.ToString("d")</td>
+                            <td class="align-middle">@comanda.stare</td>
+                            <td class="align-middle">@comanda.total_plata RON</td>
+                            <td class="align-middle">@comanda.metoda_platii</td>
+                            <td class="align-middle">@comanda.motivatie</td>
+                            <td class="align-middle">
+                                <form asp-action="AcceptOrder" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@comanda.idComanda" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check-circle"></i> Acceptă
+                                    </button>
+                                </form>
+                                <form asp-action="RejectOrder" method="post" style="display:inline;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@comanda.idComanda" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-x-circle"></i> Respinge
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<style>
+    .title-wrapper {
+        background: linear-gradient(90deg, #343a40, #495057);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-container {
+        background-color: #ffffff !important;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-table {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-header {
+        background: linear-gradient(90deg, #6c757d, #495057);
+        color: #ffffff;
+        font-weight: 600;
+        padding: 12px;
+        text-align: center;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .table-header i {
+        margin-right: 8px;
+    }
+
+    .table-success {
+        background-color: #e6f3e6;
+        color: #1a5e1a;
+        transition: background-color 0.3s ease;
+    }
+
+    .table-warning {
+        background-color: #fff8e1;
+        color: #664d03;
+        transition: background-color 0.3s ease;
+    }
+
+    .table-success:hover,
+    .table-warning:hover {
+        background-color: #e0e0e0;
+        transform: translateY(-2px);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-responsive {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .align-middle {
+        vertical-align: middle;
+        padding: 12px;
+    }
+
+    .alert-container {
+        position: relative;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .alert-custom {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #333;
+        font-size: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .alert-custom:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .message-text {
+        font-weight: 500;
+    }
+
+    .btn-close {
+        color: #666;
+        font-size: 1.2rem;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+    }
+
+    .btn-close:hover {
+        opacity: 1;
+        color: #000;
+    }
+
+</style>

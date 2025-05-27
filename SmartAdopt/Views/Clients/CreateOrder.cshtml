@@ -1,0 +1,43 @@
+﻿@model SmartAdopt.Models.Comanda
+
+@{
+    ViewData["Title"] = "Creează o Comandă";
+}
+
+<h2 class="text-center mb-4">Creează o Comandă pentru @ViewBag.nume</h2>
+
+<div class="container">
+    <form asp-action="CreateOrder" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <input type="hidden" asp-for="idAnimal" />
+        <input type="hidden" asp-for="idClient" />
+        <input type="hidden" asp-for="total_plata" />
+
+        <div class="form-group">
+            <label asp-for="metoda_platii" class="control-label"></label>
+            <select asp-for="metoda_platii" class="form-control">
+                <option value="">Selectați metoda de plată</option>
+                <option value="Card">Card</option>
+                <option value="Transfer Bancar">Transfer Bancar</option>
+                <option value="Numerar">Numerar</option>
+            </select>
+            <span asp-validation-for="metoda_platii" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="motivatie" class="control-label"></label>
+            <textarea asp-for="motivatie" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="motivatie" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Trimite Comanda" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

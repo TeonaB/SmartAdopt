@@ -1,0 +1,135 @@
+﻿@model List<SmartAdopt.Models.Comanda>
+
+<!-- Add this line to include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+@{
+    ViewData["Title"] = "Comenzile Mele";
+}
+
+<h2 class="text-center mb-4 text-white fw-bold">Comenzile Mele</h2>
+
+<div class="container">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="text-center p-4 bg-light rounded-3 shadow-sm">
+            <i class="bi bi-info-circle text-info fs-3"></i>
+            <p class="mb-0 text-muted">Nu ai nicio comandă încă.</p>
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table custom-table rounded-3 overflow-hidden">
+                <thead>
+                    <tr>
+                        <th scope="col" class="table-header">
+                            <i class="bi bi-paw"></i> Animal
+                        </th>
+                        <th scope="col" class="table-header">
+                            <i class="bi bi-calendar-date"></i> Data Comenzii
+                        </th>
+                        <th scope="col" class="table-header">
+                            <i class="bi bi-clock-history"></i> Stare
+                        </th>
+                        <th scope="col" class="table-header">
+                            <i class="bi bi-cash"></i> Total Plată
+                        </th>
+                        <th scope="col" class="table-header">
+                            <i class="bi bi-credit-card"></i> Metoda Plății
+                        </th>
+                        <th scope="col" class="table-header">
+                            <i class="bi bi-pencil"></i> Motivație
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var comanda in Model)
+                    {
+                        var statusClass = comanda.stare switch
+                        {
+                            "Finalizată" => "table-success",
+                            "Respinsă" => "table-danger",
+                            "În așteptare"  => "table-warning",
+                            _ => "table-secondary"
+                        };
+
+                        <tr class="@statusClass">
+                            <td class="align-middle">@comanda.Animal.nume</td>
+                            <td class="align-middle">@comanda.data_comenzii.ToString("d")</td>
+                            <td class="align-middle">@comanda.stare</td>
+                            <td class="align-middle">@comanda.total_plata RON</td>
+                            <td class="align-middle">@comanda.metoda_platii</td>
+                            <td class="align-middle">@comanda.motivatie</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<style>
+    .custom-table {
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-header {
+        background: linear-gradient(90deg, #6c757d, #495057); /* Dark gradient */
+        color: #ffffff; /* White text for contrast */
+        font-weight: 600;
+        padding: 12px;
+        text-align: center;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+        .table-header i {
+            margin-right: 8px;
+        }
+
+    .table-success {
+        background-color: #e6f3e6; /* Softer green */
+        color: #1a5e1a; /* Darker green text */
+        transition: background-color 0.3s ease;
+    }
+
+    .table-danger {
+        background-color: #f9e6e6; /* Softer red */
+        color: #721c24; /* Dark red text */
+        transition: background-color 0.3s ease;
+    }
+
+    .table-warning {
+        background-color: #fff8e1; /* Softer yellow/orange */
+        color: #664d03; /* Darker yellow text */
+        transition: background-color 0.3s ease;
+    }
+
+    .table-secondary {
+        background-color: #f1f3f5; /* Softer gray */
+        color: #343a40; /* Darker gray text */
+        transition: background-color 0.3s ease;
+    }
+
+        .table-success:hover,
+        .table-danger:hover,
+        .table-warning:hover,
+        .table-secondary:hover {
+            background-color: #e0e0e0; /* Light hover effect */
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+    .table-responsive {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .align-middle {
+        vertical-align: middle;
+        padding: 12px;
+    }
+</style>

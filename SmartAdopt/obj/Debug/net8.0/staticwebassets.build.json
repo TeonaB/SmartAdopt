@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "new0sWezWXAHyzmzY2ibrRLjruzGIoqgFu+fbOs6Ya8=",
+  "Hash": "JwQ66L/6NMF2akamkn5zzzVsJj/xFFPXeDRoUMqo1p4=",
   "Source": "SmartAdopt",
   "BasePath": "_content/SmartAdopt",
   "Mode": "Default",
@@ -1233,12 +1233,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\caine1.jpg",
+      "Identity": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\WIN_20241127_15_17_44_Pro.jpg",
       "SourceId": "SmartAdopt",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\",
       "BasePath": "_content/SmartAdopt",
-      "RelativePath": "images/caine1.jpg",
+      "RelativePath": "images/animals/WIN_20241127_15_17_44_Pro.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1249,7 +1249,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\caine1.jpg"
+      "OriginalItemSpec": "wwwroot\\images\\animals\\WIN_20241127_15_17_44_Pro.jpg"
     },
     {
       "Identity": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\login.png",
@@ -1288,25 +1288,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\logo.png"
-    },
-    {
-      "Identity": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\WIN_20241127_15_17_38_Pro.jpg",
-      "SourceId": "SmartAdopt",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\",
-      "BasePath": "_content/SmartAdopt",
-      "RelativePath": "images/WIN_20241127_15_17_38_Pro.jpg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\images\\WIN_20241127_15_17_38_Pro.jpg"
     },
     {
       "Identity": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\js\\site.js",

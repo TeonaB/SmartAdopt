@@ -23,6 +23,21 @@ namespace SmartAdopt.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Comanda>()
+                .HasOne(c => c.Animal)
+                .WithMany() 
+                .HasForeignKey(c => c.idAnimal);
+            
+            modelBuilder.Entity<Comanda>()
+                .HasOne(c => c.Client)
+                .WithMany() 
+                .HasForeignKey(c => c.idClient);
+
+            modelBuilder.Entity<Client>()
+                .HasOne(c => c.ApplicationUser)
+                .WithMany()
+                .HasForeignKey(c => c.ApplicationUserId);
+
             base.OnModelCreating(modelBuilder);
 
         }

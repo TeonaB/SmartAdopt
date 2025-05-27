@@ -165,5 +165,74 @@ namespace SmartAdopt.Controllers
                 return RedirectToAction("Index", "Clients");
             }
         }
+
+        public async Task<IActionResult> CreateOrder(int id)
+        {
+            var animal = await db.Animals.FindAsync(id);
+            if (animal == null)
+            {
+                return RedirectToAction("Index", "Animals");
+            }
+            var userId = _userManager.GetUserId(User);
+            var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == userId);
+            if (client == null)
+            {
+                return Unauthorized();
+            }
+
+            var comanda = new Comanda
+            {
+                idAnimal = id,
+                idClient = client.idClient, 
+                data_comenzii = DateTime.Now,
+                stare = "În așteptare", 
+                total_plata = animal.pret, 
+                metoda_platii = "", 
+                motivatie = "" 
+            };
+            ViewBag.nume = animal.nume;
+            return View(comanda);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateOrder(Comanda comanda)
+        {
+
+            var userId = _userManager.GetUserId(User);
+            var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == userId);
+            if (client == null)
+            {
+                return Unauthorized();
+            }
+            comanda.idClient = client.idClient; 
+            comanda.data_comenzii = DateTime.Now;
+            comanda.stare = "În așteptare";
+            db.Comandas.Add(comanda);
+            await db.SaveChangesAsync();
+
+            TempData["message"] = "Comanda a fost creată cu succes!";
+            return RedirectToAction("Index", "Animals");
+        }
+
+        public async Task<IActionResult> ShowOrders()
+        {
+            var userId = _userManager.GetUserId(User);
+            var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == userId);
+            if (client == null)
+            {
+                return Unauthorized();
+            }
+
+            int clientId = client.idClient; 
+
+            var orders = await db.Comandas
+                .Where(c => c.idClient == clientId)
+                .Include(c => c.Animal) 
+                .ToListAsync();
+
+            return View(orders);
+        }
     }
 }

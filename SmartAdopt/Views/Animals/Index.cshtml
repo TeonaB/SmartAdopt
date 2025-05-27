@@ -1,12 +1,33 @@
-﻿<br />
+﻿@if (ViewBag.Message != null)
+{
+    <div class="alert-container mb-5">
+        <div class="alert alert-custom d-flex align-items-center justify-content-between rounded-3 p-3"
+             role="alert">
+            <div class="d-flex align-items-center">
+                @if (ViewBag.MessageType == "success")
+                {
+                    <i class="bi bi-check-circle-fill me-2 text-success"></i>
+                }
+                else if (ViewBag.MessageType == "error")
+                {
+                    <i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i>
+                }
+                else
+                {
+                    <i class="bi bi-info-circle-fill me-2 text-info"></i>
+                }
+                <span class="message-text">@ViewBag.Message</span>
+            </div>
+        </div>
+    </div>
+}
+
+
+<br />
 <h2 class="text-center">Faceti cunostinta cu prietenii vostri blanosi</h2>
 <br />
 
 
-@if (ViewBag.Message != null)
-{
-    <h2 class="bg-albastru p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
-}
 
 <!-- Add Animal button for admins -->
 @if (User.IsInRole("Admin"))
@@ -39,11 +60,17 @@
 
                 @if (User.IsInRole("Admin"))
                 {
-                    <a class="btn bg-albastru border-dark" href="/Admins/DeleteAnimal/@animal.idAnimal">Stergere</a>
+                    <a class="btn btn-primary border-dark" href="/Admins/EditAnimal/@animal.idAnimal">
+                        <i class="bi bi-pencil-square"></i> Editare
+                    </a>
+                    <div class="btn-group">
+                        <a class="btn btn-danger border-dark" href="/Admins/DeleteAnimal/@animal.idAnimal">Stergere</a>
+                        <a class="btn btn-success border-dark" href="/Admins/DeleteAnimalTotal/@animal.idAnimal">Animal adoptat</a>
+                    </div>
                 }
                 @if (User.IsInRole("Client"))
                 {
-                    <a class="btn bg-albastru border-dark" href="/Clients/AddAnimalComanda/@animal.idAnimal">Creeaza cerere adoptie</a>
+                    <a class="btn bg-albastru border-dark" href="/Clients/CreateOrder/@animal.idAnimal">Creeaza cerere adoptie</a>
                 }
             </div>
         </div>
@@ -51,6 +78,37 @@
 </div>
 
 <style>
+
+    .btn-group .btn {
+        margin-right: 5px; /* Optional: Adds spacing between buttons */
+    }
+
+        .btn-group .btn:last-child {
+            margin-right: 0; /* Removes margin from the last button */
+        }
+
+    .alert-container {
+        position: relative;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    .alert-custom {
+        background-color: #f8f9fa; /* Light gray background */
+        border: 1px solid #dee2e6;
+        color: #333; /* Dark text for readability */
+        font-size: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+        .alert-custom:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+    .message-text {
+        font-weight: 500;
+    }
     .btn-add-animal {
         background-color: #4da8da; /* Bright light blue */
         color: white;

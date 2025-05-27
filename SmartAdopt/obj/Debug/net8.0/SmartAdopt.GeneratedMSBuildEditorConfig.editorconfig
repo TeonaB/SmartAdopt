@@ -86,12 +86,24 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5zXEFkZEFuaW1hbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Admins/EditAnimal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5zXEVkaXRBbmltYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Admins/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5zXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Admins/ShowOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5zXFNob3dPcmRlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Animals/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQW5pbWFsc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Clients/CreateOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xDcmVhdGVPcmRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Clients/EditAdresa.cshtml]
@@ -104,6 +116,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Clients/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Clients/ShowOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50c1xTaG93T3JkZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Teona/Desktop/SmartAdopt/SmartAdopt/Views/Home/Index.cshtml]
