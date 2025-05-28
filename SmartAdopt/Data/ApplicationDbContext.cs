@@ -47,7 +47,10 @@ namespace SmartAdopt.Data
                 .HasOne(c => c.Postare)
                 .WithMany(p => p.Comentarius)
                 .HasForeignKey(c => c.idPostare);
-
+            modelBuilder.Entity<Comentariu>()
+                .HasOne(c => c.Client)
+                .WithMany(p => p.Comentarius)
+                .HasForeignKey(c => c.idClient);
             base.OnModelCreating(modelBuilder);
 
         }

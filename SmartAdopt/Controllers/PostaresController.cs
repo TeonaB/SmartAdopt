@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartAdopt.Data;
@@ -49,18 +50,34 @@ namespace SmartAdopt.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> Show(int id)
         {
             var postare = await db.Postares
                 .Include(p => p.ApplicationUser)
-                .Include(p => p.Comentarius)
                 .FirstOrDefaultAsync(p => p.idPostare == id);
+            var comentarii = await db.Comentarius
+                .Where(c => c.idPostare == id)
+                .Include(c => c.Client)
+                .ThenInclude(c => c.ApplicationUser)
+                .ToListAsync();
 
             if (postare == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Comentarii = comentarii;
+            var user = await _userManager.GetUserAsync(User);
+            var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == user.Id);
+            if (client != null)
+                ViewBag.UserId = client.idClient;
+            else
+                ViewBag.UserId = 0;
+            ViewBag.NewComment = new Comentariu
+            {
+                idPostare = id, 
+                descriere = "" 
+            };
             return View(postare);
         }
     }

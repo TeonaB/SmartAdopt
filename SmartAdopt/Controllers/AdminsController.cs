@@ -338,11 +338,18 @@ namespace SmartAdopt.Controllers
             try
             {
                 var postare = await db.Postares.FindAsync(id);
+                var comentarii = db.Comentarius.Where( c => c.idPostare == id);
+               
                 if (postare == null)
                 {
                     TempData["message"] = "Postarea nu a fost găsită";
                     TempData["messageType"] = "error";
                     return RedirectToAction("Index", "Postares");
+                }
+                if (comentarii.Any())
+                {
+                    db.Comentarius.RemoveRange(comentarii);
+                    await db.SaveChangesAsync();
                 }
 
                 db.Postares.Remove(postare);

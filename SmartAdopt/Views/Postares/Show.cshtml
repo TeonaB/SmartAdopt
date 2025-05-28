@@ -3,6 +3,229 @@
 @{
     ViewData["Title"] = "Detalii Postare";
 }
+@{
+    bool isAdmin = User.IsInRole("Admin");
+    bool isClient = User.IsInRole("Client");
+}
 
 <partial name="PostareInfo" model="@Model" />
 
+<br />
+<h2 class="comment-title">Sectiunea de Comentarii</h2>
+<br />
+
+@if (isClient)
+{
+    <div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div>
+                    <form asp-controller="Comentarius" asp-action="Add" asp-route-id="@Model?.idPostare" method="post">
+                        <div>
+                            <input type="hidden" asp-for="idPostare" value="@Model?.idPostare" />
+                            <div class="mb-3">
+                                <textarea name="descriere" class="form-control friendly-input" rows="4" placeholder="Scrie comentariul tău aici..."></textarea>
+                                <span class="text-danger" data-valmsg-for="descriere"></span>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn bg-baby-blue">Adaugă Comentariul</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+}
+
+
+<!-- Afisare comentarii impreuna cu butoanele de editare si stergere -->
+@if (ViewBag.Comentarii == null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="card comment-card">
+                    <div class="card-body text-center">
+                        <p class="text-muted">Nu există comentarii pentru această postare.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (SmartAdopt.Models.Comentariu comm in ViewBag.Comentarii)
+    {
+        <div >
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class=" comment-card">
+                        <div >
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="comment-content">
+                                    <p class="mb-0"><i class="bi bi-file-text me-2 text-white"></i>@comm.descriere</p>
+                                </div>
+                                <div style="width:300px ; height:100px;">
+                                    <strong class="text-white"><i class="bi bi-person-check"></i> @comm.Client.ApplicationUser.nume</strong>
+                                    <br />
+                                </div>
+                                @if (comm.idClient == ViewBag.UserId || isAdmin)
+                                {
+                                    <div class="comment-actions">
+                                        <form method="post" action="/Comentarius/Delete/@comm.idComentariu" class="d-inline">
+                                            <button class="btn btn-outline-danger btn-sm" type="submit">
+                                                <i class="bi bi-trash"></i> Șterge
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="comment-actions" style="width: 100px;">
+                                        &nbsp; <!-- Empty but takes space -->
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    }
+}
+
+<style>
+    .comment-title {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  font-size: 2rem;
+  color: #4d2c91; /* A warm purple tone */
+  background: linear-gradient(to right, #fdf6e3, #fce4ec);
+  padding: 15px 20px;
+  margin: 20px auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 80%;}
+
+    /* Form Styling */
+    .custom-form-card {
+        background-color: #f9f1ef !important; /* Solid soft peach to ensure visibility */
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        transition: transform 0.3s ease;
+    }
+
+        .custom-form-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .form-container {
+        padding: 0;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #444;
+    }
+
+    .friendly-input {
+        background-color: #fff5f2 !important; /* Light peach for input */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 1rem;
+        color: #444;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .friendly-input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+            outline: none;
+            background-color: #ffffff;
+        }
+
+    .bg-baby-blue {
+        background-color: #89c2d9;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #ffffff;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .bg-baby-blue:hover {
+            background-color: #77b5d0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .bg-baby-blue:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    /* Comment Section Styling */
+    .comment-card {
+        background-color: rgba(255, 255, 255, 0.2) !important; /* Semi-transparent white */
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08) !important;
+        backdrop-filter: blur(8px); /* Optional: adds a frosted glass effect */
+        -webkit-backdrop-filter: blur(8px);
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+
+        .comment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12) !important;
+        }
+
+    .comment-content {
+        flex-grow: 1;
+        font-size: 1rem;
+        color: #f1f1f1 !important; /* A soft white */
+    }
+
+    .comment-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+        }
+
+    .text-muted {
+        color: #6c757d !important;
+    }
+</style>
