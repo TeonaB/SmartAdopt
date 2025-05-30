@@ -17,11 +17,12 @@ namespace SmartAdopt.Controllers
         private readonly ApplicationDbContext db;
         private IWebHostEnvironment _env;
 
-        public AdminsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IWebHostEnvironment env)
+        public AdminsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment env)
         {
             db = context;
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _env = env;
         }
         public async Task<IActionResult> Index()
@@ -160,7 +161,7 @@ namespace SmartAdopt.Controllers
 
         public async Task<IActionResult> DeleteAnimal(int id)
         {
-            
+
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
@@ -242,8 +243,8 @@ namespace SmartAdopt.Controllers
             var orders = await db.Comandas
                 .Include(c => c.Animal)
                 .Include(c => c.Client)
-                .ThenInclude(cl => cl.ApplicationUser) 
-                .OrderByDescending(c => c.data_comenzii) 
+                .ThenInclude(cl => cl.ApplicationUser)
+                .OrderByDescending(c => c.data_comenzii)
                 .ToListAsync();
 
             var acceptedOrders = orders
@@ -338,8 +339,8 @@ namespace SmartAdopt.Controllers
             try
             {
                 var postare = await db.Postares.FindAsync(id);
-                var comentarii = db.Comentarius.Where( c => c.idPostare == id);
-               
+                var comentarii = db.Comentarius.Where(c => c.idPostare == id);
+
                 if (postare == null)
                 {
                     TempData["message"] = "Postarea nu a fost găsită";
@@ -416,6 +417,339 @@ namespace SmartAdopt.Controllers
             }
 
             return View(postare);
+        }
+
+        public async Task<IActionResult> ShowAll()
+        {
+            var users = db.Users.OrderBy(u => u.nume);
+
+            var usersWithRoles = new List<(ApplicationUser User, string Role)>();
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault() ?? "Client";
+                usersWithRoles.Add((user, role));
+            }
+
+            var sortedUsers = usersWithRoles
+                .OrderBy(ur => ur.Role == "Admin" ? 0 : 1)
+                .ThenBy(ur => ur.User.nume);
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
+
+
+            ViewBag.UsersList = sortedUsers;
+            return View();
+        }
+
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    TempData["message"] = "Utilizatorul nu a fost găsit.";
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("ShowAll", "Admins");
+                }
+
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault();
+
+                if (role == "Admin")
+                {
+                    var admin = await db.Admins
+                        .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+
+                    var postari = await db.Postares
+                        .Where(p => p.ApplicationUserId == user.Id)
+                        .ToListAsync();
+
+                    if (postari.Any())
+                    {
+                        foreach (var postare in postari)
+                        {
+                            var comentarii = db.Comentarius.Where(c => c.idPostare == postare.idPostare);
+                            if (comentarii.Any())
+                            {
+                                db.Comentarius.RemoveRange(comentarii);
+                                await db.SaveChangesAsync();
+                            }
+
+                            db.Postares.Remove(postare);
+                            await db.SaveChangesAsync();
+                        }
+                    }
+
+                    db.Admins.Remove(admin);
+                    await db.SaveChangesAsync();
+                }
+                else if (role == "Client")
+                {
+                    var client = await db.Clients
+                        .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+
+                    if (client != null)
+                    {
+
+                        var comenzi = await db.Comandas
+                            .Where(c => c.idClient == client.idClient)
+                            .ToListAsync();
+
+                        if (comenzi.Any())
+                        {
+                            db.Comandas.RemoveRange(comenzi);
+                            await db.SaveChangesAsync();
+                        }
+
+                        var comentarii = await db.Comentarius
+                            .Where(c => c.idClient == client.idClient)
+                            .ToListAsync();
+
+                        if (comentarii.Any())
+                        {
+                            db.Comentarius.RemoveRange(comentarii);
+                            await db.SaveChangesAsync();
+                        }
+
+                        var raspChestionars = await db.RaspChestionars
+                        .Where(rc => rc.idClient == client.idClient)
+                        .Include(rc => rc.RaspAnimals) 
+                        .ToListAsync();
+
+                        if (raspChestionars.Any())
+                        {
+                            foreach (var raspChestionar in raspChestionars)
+                            {
+                                if (raspChestionar.RaspAnimals != null)
+                                {
+                                    db.RaspAnimals.RemoveRange(raspChestionar.RaspAnimals);
+                                }
+                                db.RaspChestionars.Remove(raspChestionar);
+                            }
+                            await db.SaveChangesAsync();
+                        }
+                        db.Clients.Remove(client);
+                        await db.SaveChangesAsync();
+                    }
+                }
+
+                var result = await _userManager.DeleteAsync(user);
+                if (!result.Succeeded)
+                {
+                    TempData["message"] = "Eroare la ștergerea utilizatorului: " + string.Join(", ", result.Errors.Select(e => e.Description));
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("ShowAll", "Admins");
+                }
+
+                TempData["message"] = "Utilizatorul a fost șters cu succes.";
+                TempData["messageType"] = "success";
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = "A apărut o eroare: " + ex.Message;
+                TempData["messageType"] = "error";
+            }
+
+            return RedirectToAction("ShowAll", "Admins");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SchimbareRol(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    TempData["message"] = "Utilizatorul nu a fost găsit.";
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("ShowAll", "Admins");
+                }
+
+                var roles = await _userManager.GetRolesAsync(user);
+                var currentRole = roles.FirstOrDefault();
+
+
+                string newRole = "";
+                if (currentRole == "Admin")
+                {
+                    newRole = "Client";
+                }
+                else if (currentRole == "Client")
+                {
+                    newRole = "Admin";
+                }
+
+                if (currentRole =="Client")
+                {
+                    var client = await db.Clients
+                       .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+
+                    if (client != null)
+                    {
+                        var comenzi = await db.Comandas
+                            .Where(c => c.idClient == client.idClient)
+                            .ToListAsync();
+
+                        if (comenzi.Any())
+                        {
+                            db.Comandas.RemoveRange(comenzi);
+                            await db.SaveChangesAsync();
+                        }
+
+                        var comentarii = await db.Comentarius
+                            .Where(c => c.idClient == client.idClient)
+                            .ToListAsync();
+
+                        if (comentarii.Any())
+                        {
+                            db.Comentarius.RemoveRange(comentarii);
+                            await db.SaveChangesAsync();
+                        }
+
+                        var raspChestionars = await db.RaspChestionars
+                        .Where(rc => rc.idClient == client.idClient)
+                        .Include(rc => rc.RaspAnimals)
+                        .ToListAsync();
+
+                        if (raspChestionars.Any())
+                        {
+                            foreach (var raspChestionar in raspChestionars)
+                            {
+                                if (raspChestionar.RaspAnimals != null)
+                                {
+                                    db.RaspAnimals.RemoveRange(raspChestionar.RaspAnimals);
+                                }
+                                db.RaspChestionars.Remove(raspChestionar);
+                            }
+                            await db.SaveChangesAsync();
+                        }
+                        db.Clients.Remove(client);
+                        await db.SaveChangesAsync();
+                    }
+
+                    var admin = new Admin
+                    {
+
+                        ApplicationUserId = user.Id
+                    };
+                    db.Admins.Add(admin);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    var admin = await db.Admins
+                        .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+
+                    var postari = await db.Postares
+                        .Where(p => p.ApplicationUserId == user.Id)
+                        .ToListAsync();
+
+                    if (postari.Any())
+                    {
+                        foreach (var postare in postari)
+                        {
+                            var comentarii = db.Comentarius.Where(c => c.idPostare == postare.idPostare);
+                            if (comentarii.Any())
+                            {
+                                db.Comentarius.RemoveRange(comentarii);
+                                await db.SaveChangesAsync();
+                            }
+
+                            db.Postares.Remove(postare);
+                            await db.SaveChangesAsync();
+                        }
+                    }
+
+                    db.Admins.Remove(admin);
+                    await db.SaveChangesAsync();
+
+                    var client = new Client
+                    {
+
+                        ApplicationUserId = user.Id,
+                        idRaspChestionar = 0,
+                        CompletedProfile = false,
+                        nr_telefon = " ",
+                        adresa = " "
+                    };
+                    db.Clients.Add(client);
+                    db.SaveChanges();
+                }
+                if (currentRole != null)
+                {
+                    var removeResult = await _userManager.RemoveFromRoleAsync(user, currentRole);
+                    if (!removeResult.Succeeded)
+                    {
+                        TempData["message"] = "Eroare la eliminarea rolului curent: " + string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                        TempData["messageType"] = "error";
+                        return RedirectToAction("ShowAll", "Admins");
+                    }
+                }
+
+                var addResult = await _userManager.AddToRoleAsync(user, newRole);
+                if (!addResult.Succeeded)
+                {
+                    TempData["message"] = "Eroare la asignarea noului rol: " + string.Join(", ", addResult.Errors.Select(e => e.Description));
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("ShowAll", "Admins");
+                }
+   
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = "A apărut o eroare: " + ex.Message;
+                TempData["messageType"] = "error";
+                return RedirectToAction("ShowAll", "Admins");
+            }
+
+            var user2 = await _userManager.GetUserAsync(User);
+            if(user2.Id == id)
+            {
+                await _signInManager.SignOutAsync();
+                return RedirectToAction("Index", "Clients");
+            }
+            else
+            {
+                TempData["message"] = "Rolul utilizatorului a fost schimbat cu succes";
+                TempData["messageType"] = "success";
+                return RedirectToAction("ShowAll", "Admins");
+            } 
+        }
+
+        public async Task<IActionResult> ViewClient(string id)
+        {
+            try
+            {
+                var client = await db.Clients
+                    .Include(c => c.ApplicationUser)
+                    .Include(c => c.Comandas)
+                    .FirstOrDefaultAsync(c => c.ApplicationUserId == id);
+
+                if (client == null)
+                {
+                    TempData["message"] = "Clientul nu a fost găsit.";
+                    TempData["messageType"] = "error";
+                    return RedirectToAction("ShowAll", "Admins");
+                }
+                var orders = await db.Comandas
+               .Where(c => c.idClient == client.idClient)
+               .Include(c => c.Animal)
+               .ToListAsync();
+                ViewBag.orders = orders;
+                return View(client);
+            }
+            catch (Exception ex)
+            {
+                TempData["message"] = "A apărut o eroare: " + ex.Message;
+                TempData["messageType"] = "error";
+                return RedirectToAction("ShowAll", "Admins");
+            }
         }
     }
 }

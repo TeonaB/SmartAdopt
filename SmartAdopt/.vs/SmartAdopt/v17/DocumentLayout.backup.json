@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\postares\\show.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\postares\\show.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\admins\\viewclient.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\admins\\viewclient.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\postares\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\postares\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\admins\\showall.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\admins\\showall.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\controllers\\adminscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:controllers\\adminscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +22,45 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Postares\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Index.cshtml",
-              "RelativeToolTip": "Views\\Postares\\Index.cshtml",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAswB0AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "ViewClient.cshtml",
+              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\ViewClient.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admins\\ViewClient.cshtml",
+              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\ViewClient.cshtml",
+              "RelativeToolTip": "Views\\Admins\\ViewClient.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAWAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-28T14:01:17.441Z",
+              "WhenOpened": "2025-05-29T23:43:11.163Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Show.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Show.cshtml",
-              "RelativeDocumentMoniker": "Views\\Postares\\Show.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Show.cshtml*",
-              "RelativeToolTip": "Views\\Postares\\Show.cshtml*",
-              "ViewState": "AgIAAMMAAAAAAAAAAAAwwM0AAAAFAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "ShowAll.cshtml",
+              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\ShowAll.cshtml",
+              "RelativeDocumentMoniker": "Views\\Admins\\ShowAll.cshtml",
+              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\ShowAll.cshtml",
+              "RelativeToolTip": "Views\\Admins\\ShowAll.cshtml",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAAEYAAABjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-28T11:28:06.839Z",
+              "WhenOpened": "2025-05-29T17:57:14.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AdminsController.cs",
+              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Controllers\\AdminsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AdminsController.cs",
+              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Controllers\\AdminsController.cs",
+              "RelativeToolTip": "Controllers\\AdminsController.cs",
+              "ViewState": "AgIAAMMCAAAAAAAAAAAowOgCAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-29T17:09:39.775Z",
               "EditorCaption": ""
             }
           ]

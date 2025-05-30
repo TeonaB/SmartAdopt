@@ -1,54 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\postares\\show.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\postares\\show.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\postares\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\postares\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 1,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Index.cshtml",
-              "RelativeDocumentMoniker": "Views\\Postares\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Index.cshtml",
-              "RelativeToolTip": "Views\\Postares\\Index.cshtml",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAswB0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-28T14:01:17.441Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Show.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Show.cshtml",
-              "RelativeDocumentMoniker": "Views\\Postares\\Show.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Postares\\Show.cshtml",
-              "RelativeToolTip": "Views\\Postares\\Show.cshtml",
-              "ViewState": "AgIAAMMAAAAAAAAAAAAwwM0AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-05-28T11:28:06.839Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

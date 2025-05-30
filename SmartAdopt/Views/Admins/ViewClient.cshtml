@@ -1,0 +1,96 @@
+﻿@model SmartAdopt.Models.Client
+
+@{
+    ViewData["Title"] = "Detalii Client";
+}
+
+@if (TempData["message"] != null)
+
+{
+    <div class="alert @(TempData["messageType"] == "error" ? "alert-danger" : "alert-success")" role="alert">
+        @TempData["message"]
+    </div>
+}
+
+<h2>Vizualizare client</h2>
+
+<div class="card">
+    <div class="card-body text-black">
+        <h2 class="card-title">Informații Utilizator</h2>
+        <p><strong>Nume Utilizator:</strong> @Model.ApplicationUser?.nume @Model.ApplicationUser?.prenume</p>
+        <p><strong>Email:</strong> @Model.ApplicationUser?.Email</p>
+
+        <h2 class="card-title">Detalii Client</h2>
+        <p><strong>Profil Completat:</strong> @(Model.CompletedProfile ? "Da" : "Nu")</p>
+        <p><strong>Număr Telefon:</strong> @Model.nr_telefon</p>
+        <p><strong>Adresă:</strong> @Model.adresa</p>
+
+        <h5 class="card-title">Comenzi</h5>
+        @if (ViewBag.orders != null)
+
+        {
+            <div class="table-responsive">
+                <table class="table custom-table rounded-3 overflow-hidden">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="table-header">
+                                <i class="bi bi-paw"></i> Animal
+                            </th>
+                            <th scope="col" class="table-header">
+                                <i class="bi bi-calendar-date"></i> Data Comenzii
+                            </th>
+                            <th scope="col" class="table-header">
+                                <i class="bi bi-clock-history"></i> Stare
+                            </th>
+                            <th scope="col" class="table-header">
+                                <i class="bi bi-cash"></i> Total Plată
+                            </th>
+                            <th scope="col" class="table-header">
+                                <i class="bi bi-credit-card"></i> Metoda Plății
+                            </th>
+                            <th scope="col" class="table-header">
+                                <i class="bi bi-pencil"></i> Motivație
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comanda in ViewBag.orders)
+
+                        {
+                            var statusClass = comanda.stare switch
+                            {
+
+                                "Finalizată" => "table-success",
+
+                                "Respinsă" => "table-danger",
+
+                                "În așteptare" => "table-warning",
+
+                                _ => "table-secondary"
+                            };
+
+                            <tr class="@statusClass">
+                                <td class="align-middle">@comanda.Animal.nume</td>
+                                <td class="align-middle">@comanda.data_comenzii.ToString("d")</td>
+                                <td class="align-middle">@comanda.stare</td>
+                                <td class="align-middle">@comanda.total_plata RON</td>
+                                <td class="align-middle">@comanda.metoda_platii</td>
+                                <td class="align-middle">@comanda.motivatie</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+
+        else
+
+        {
+            <p>Clientul nu are nicio comandă.</p>
+        }
+    </div>
+</div>
+
+<div class="mt-3">
+    <a class="btn btn-primary" href="@Url.Action("ShowAll", "Admins")">Înapoi la Lista Utilizatorilor</a>
+</div>
