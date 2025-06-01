@@ -189,6 +189,11 @@ namespace SmartAdopt.Controllers
                 }
             }
 
+            var chestionar = await db.RaspAnimals.Where( r => r.idAnimal == id).ToListAsync();
+            if(chestionar.Any())
+            {
+                db.RaspAnimals.RemoveRange(chestionar);
+            }
             try
             {
                 db.Animals.Remove(animal);
@@ -223,11 +228,19 @@ namespace SmartAdopt.Controllers
                 db.Comandas.RemoveRange(orders);
             }
 
+            var chestionar = await db.RaspAnimals.Where(r => r.idAnimal == id).ToListAsync();
+            if (chestionar.Any())
+            {
+                db.RaspAnimals.RemoveRange(chestionar);
+            }
+
             try
             {
                 db.Animals.Remove(animal);
+                var animalsAdoptat = db.AnimalAdoptats.FirstOrDefault(c => c.idAnimalAdoptat == 1);
+                animalsAdoptat.counter++;
                 await db.SaveChangesAsync();
-
+                
                 TempData["message"] = "Animalul a fost adoptat cu succes";
             }
             catch (Exception ex)
@@ -750,6 +763,86 @@ namespace SmartAdopt.Controllers
                 TempData["messageType"] = "error";
                 return RedirectToAction("ShowAll", "Admins");
             }
+        }
+
+        public async Task<IActionResult> StatisticsRaport()
+        {
+            // User Activity
+            var totalRegisteredUsers = await db.Clients.CountAsync();
+            var usersWithCompletedProfile = await db.Clients.CountAsync(c => c.CompletedProfile == true); 
+            var allUserIds = await db.Clients.Select(c => c.idClient).ToListAsync();
+            var usersWithComments = await db.Comentarius.Select(c => c.idClient).Distinct().ToListAsync();
+            var usersInteractedWithBlog = usersWithComments.Count;
+
+            // Recommendation Insights
+            var totalRecommendationsGenerated = await db.RaspChestionars.CountAsync();
+            var topRecommendedAnimals = await db.RaspAnimals
+                .GroupBy(ra => ra.idAnimal)
+                .Select(g => new { AnimalId = g.Key, Count = g.Count() })
+                .OrderByDescending(g => g.Count)
+                .Take(5)
+                .Join(db.Animals, g => g.AnimalId, a => a.idAnimal, (g, a) => new { a.nume, a.specie, Count = g.Count })
+                .ToListAsync();
+            var ordersFromRecommendations = await db.Comandas
+                 .Join(db.Clients,
+                     comanda => comanda.idClient,
+                     client => client.idClient,
+                     (comanda, client) => new { comanda, client })
+                 .Where(x => x.client.idRaspChestionar != 0)
+                 .Join(db.RaspChestionars,
+                     x => x.client.idRaspChestionar,
+                     rc => rc.idRasp,
+                     (x, rc) => new { x.comanda, x.client, rc })
+                 .Join(db.RaspAnimals,
+                     x => new { x.rc.idRasp, idAnimal = x.comanda.idAnimal },
+                     ra => new { ra.idRasp, ra.idAnimal },
+                     (x, ra) => new { x.comanda, x.client, x.rc, ra })
+                 .CountAsync();
+
+            // Animal Data
+            var totalAnimals = await db.Animals.CountAsync();
+            var animalsBySpecies = await db.Animals
+                .GroupBy(a => a.specie)
+                .Select(g => new { Species = g.Key, Count = g.Count() })
+                .ToListAsync();
+            var averageAttributes = new
+            {
+                AvgSize = await db.Animals.AverageAsync(a => (double)a.marime),
+                AvgEnergy = await db.Animals.AverageAsync(a => (double)a.nivel_energie),
+                AvgAttention = await db.Animals.AverageAsync(a => (double)a.nivel_atentie_necesara),
+                AvgAdaptability = await db.Animals.AverageAsync(a => (double)a.nivel_adaptabilitate),
+                AvgAgeGroup = await db.Animals.AverageAsync(a => (double)a.grupa_varsta)
+            };
+            var animalsNeverRecommended = await db.Animals
+                .GroupJoin(db.RaspAnimals, a => a.idAnimal, ra => ra.idAnimal, (a, ra) => new { Animal = a, HasRecommendation = ra.Any() })
+                .Where(x => !x.HasRecommendation)
+                .Select(x => x.Animal)
+                .ToListAsync();
+            var animalsAdoptat = db.AnimalAdoptats.FirstOrDefault(c => c.idAnimalAdoptat == 1);
+            var totalAnimalsAdopted = animalsAdoptat.counter;
+            var orderStatuses = await db.Comandas
+                .GroupBy(c => c.stare)
+                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .ToListAsync();
+
+            // Prepare view model
+            var viewModel = new StatisticsReportViewModel
+            {
+                TotalRegisteredUsers = totalRegisteredUsers,
+                UsersWithCompletedProfile = usersWithCompletedProfile,
+                UsersInteractedWithBlog = usersInteractedWithBlog,
+                TotalRecommendationsGenerated = totalRecommendationsGenerated,
+                TopRecommendedAnimals = topRecommendedAnimals.Cast<dynamic>().ToList(),
+                OrdersFromRecommendations = ordersFromRecommendations,
+                TotalAnimals = totalAnimals,
+                AnimalsBySpecies = animalsBySpecies.Cast<dynamic>().ToList(),
+                AverageAttributes = averageAttributes,
+                AnimalsNeverRecommended = animalsNeverRecommended,
+                TotalAnimalsAdopted = totalAnimalsAdopted,
+                OrderStatuses = orderStatuses.Cast<dynamic>().ToList()
+            };
+
+            return View(viewModel);
         }
     }
 }

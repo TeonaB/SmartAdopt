@@ -21,26 +21,26 @@ namespace SmartAdopt.Models
         [Range(0, 20, ErrorMessage = "Introdu o valoarea reala")]
         public int varsta { get; set; }
         [Required(ErrorMessage = "Camp obligatoriu!")]
-        [Range(0, 5, ErrorMessage = "Introdu o valoare intre 0 si 5")]
+        [Range(1, 5, ErrorMessage = "Introdu o valoare intre 1 si 5")]
         public int nivel_energie { get; set; }
         [Required(ErrorMessage = "Camp obligatoriu!")]
-        [Range(0, 5, ErrorMessage = "Introdu o valoare intre 0 si 5")]
+        [Range(1, 5, ErrorMessage = "Introdu o valoare intre 1 si 5")]
         public int marime { get; set; }
         [Required(ErrorMessage = "Camp obligatoriu!")]
-        [Range(0, 5, ErrorMessage = "Introdu o valoare intre 0 si 5")]
+        [Range(1, 5, ErrorMessage = "Introdu o valoare intre 1 si 5")]
         public int nivel_adaptabilitate { get; set; }
         [Required(ErrorMessage = "Camp obligatoriu!")]
-        [Range(0, 5, ErrorMessage = "Introdu o valoare intre 0 si 5")]
+        [Range(1, 5, ErrorMessage = "Introdu o valoare intre 1 si 5")]
         public int grupa_varsta { get; set; }
         [Required(ErrorMessage = "Camp obligatoriu!")]
-        [Range(0, 5, ErrorMessage = "Introdu o valoare intre 0 si 5")]
+        [Range(1, 5, ErrorMessage = "Introdu o valoare intre 1 si 5")]
         public int nivel_atentie_necesara { get; set; }
         public string vaccinuri { get; set; } 
         public string tip_alimentatie { get; set; } 
         public string starea_sanatatii { get; set; }
         public DateTime ultima_verificare_vet { get; set; }
         [Required(ErrorMessage = "Camp obligatoriu!")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Introdu o valoare > 0!")]
+        [Range(1.00, double.MaxValue, ErrorMessage = "Introdu o valoare > 1!")]
         public decimal pret { get; set; } 
 
         // Navigation properties

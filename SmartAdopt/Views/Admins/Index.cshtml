@@ -66,9 +66,8 @@
 <body>
     <div class="jumbotron">
         <h2>Bine ai revenit, @Model.nume @Model.prenume!</h2>
-        <p>Esti pregatit sa ai grija de animalutele tale? Foloseste Navigation Bar-ul pentru a incepe!</p>
-
-        <!-- Optional placeholder stats -->
+        <p>Esti pregatit sa ai grija de animalutele tale?</p>
+        <p>Foloseste Navigation Bar-ul pentru a incepe!</p>
         <div class="stats">
             <div class="stat-item">
                 <p>@ViewBag.AnimalCount</p>
@@ -78,6 +77,12 @@
                 <p>@ViewBag.ComenziCount</p>
                 <span>Comenzi in curs</span>
             </div>
+        </div>
+        <div class="mt-3">
+
+            <a class="btn btn-primary" href="@Url.Action("StatisticsRaport", "Admins")">
+                <i class="bi bi-file-earmark-text"></i> Vizualizare Raport
+            </a>
         </div>
     </div>
 </body>

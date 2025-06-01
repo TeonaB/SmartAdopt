@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartAdopt.Data;
 
@@ -11,9 +12,11 @@ using SmartAdopt.Data;
 namespace SmartAdopt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250601124649_ChestionarEntitati2")]
+    partial class ChestionarEntitati2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,22 +248,6 @@ namespace SmartAdopt.Data.Migrations
                     b.HasKey("idAnimal");
 
                     b.ToTable("Animals");
-                });
-
-            modelBuilder.Entity("SmartAdopt.Models.AnimalAdoptat", b =>
-                {
-                    b.Property<int>("idAnimalAdoptat")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idAnimalAdoptat"));
-
-                    b.Property<int>("counter")
-                        .HasColumnType("int");
-
-                    b.HasKey("idAnimalAdoptat");
-
-                    b.ToTable("AnimalAdoptats");
                 });
 
             modelBuilder.Entity("SmartAdopt.Models.ApplicationUser", b =>

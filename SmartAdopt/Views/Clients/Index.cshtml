@@ -96,8 +96,8 @@
         <h2>Salut, @Model.nume @Model.prenume!</h2>
         <h4>Bine ai venit la Smart Adopt, locul unde îți găsești prietenul perfect!</h4>
         <p>Vrei să completezi un chestionar rapid pentru a-ți găsi animalul ideal?</p>
-        <a href="Play" class="btn btn-primary mr-3">Da, completează chestionarul</a>
-        <a href="Animals" class="btn btn-secondary">Nu, arată-mi animalele disponibile</a>
+        <a href="@Url.Action("Chestionar", "Clients")" class="btn btn-primary mr-3">Da, completează chestionarul</a>
+        <a href="@Url.Action("Index", "Animals")" class="btn btn-secondary">Nu, arată-mi animalele disponibile</a>
     </div>
 </body>
 </html>

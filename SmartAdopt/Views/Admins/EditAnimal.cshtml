@@ -44,31 +44,31 @@
 
         <div class="mb-3">
             <label asp-for="nivel_energie" class="control-label"></label>
-            <input asp-for="nivel_energie" class="form-control" type="number" min="0" max="5" />
+            <input asp-for="nivel_energie" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="nivel_energie" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="marime" class="control-label"></label>
-            <input asp-for="marime" class="form-control" type="number" min="0" max="5" />
+            <input asp-for="marime" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="marime" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="nivel_adaptabilitate" class="control-label"></label>
-            <input asp-for="nivel_adaptabilitate" class="form-control" type="number" min="0" max="5" />
+            <input asp-for="nivel_adaptabilitate" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="nivel_adaptabilitate" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="grupa_varsta" class="control-label"></label>
-            <input asp-for="grupa_varsta" class="form-control" type="number" min="0" max="5" />
+            <input asp-for="grupa_varsta" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="grupa_varsta" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="nivel_atentie_necesara" class="control-label"></label>
-            <input asp-for="nivel_atentie_necesara" class="form-control" type="number" min="0" max="5" />
+            <input asp-for="nivel_atentie_necesara" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="nivel_atentie_necesara" class="text-danger"></span>
         </div>
 
@@ -98,7 +98,7 @@
 
         <div class="mb-3">
             <label asp-for="pret" class="control-label"></label>
-            <input asp-for="pret" class="form-control" type="number" step="0.01" min="0.01" />
+            <input asp-for="pret" class="form-control" type="number" step="0.10" min="1.00" />
             <span asp-validation-for="pret" class="text-danger"></span>
         </div>
 

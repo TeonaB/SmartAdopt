@@ -20,7 +20,7 @@ namespace SmartAdopt.Data
         public DbSet<Postare> Postares { get; set; }
         public DbSet<Comentariu> Comentarius { get; set; }
         public DbSet<Comanda> Comandas { get; set; }
-
+        public DbSet<AnimalAdoptat> AnimalAdoptats { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comanda>()
@@ -35,8 +35,8 @@ namespace SmartAdopt.Data
 
             modelBuilder.Entity<Client>()
                 .HasOne(c => c.ApplicationUser)
-                .WithMany()
-                .HasForeignKey(c => c.ApplicationUserId);
+                .WithOne()
+                .HasForeignKey<Client>(c => c.ApplicationUserId);
 
             modelBuilder.Entity<Postare>()
                 .HasOne(p => p.ApplicationUser)
@@ -53,6 +53,20 @@ namespace SmartAdopt.Data
                 .HasForeignKey(c => c.idClient);
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<RaspChestionar>()
+                .HasOne(c => c.Client)
+                .WithOne()
+                .HasForeignKey<RaspChestionar>(c => c.idClient);
+
+            modelBuilder.Entity<RaspAnimal>()
+                .HasOne(c => c.RaspChestionar)
+                .WithMany(rc => rc.RaspAnimals)
+                .HasForeignKey(c => c.idRasp);
+
+            modelBuilder.Entity<RaspAnimal>()
+                .HasOne(c => c.Animal)
+                .WithMany(rc => rc.RaspAnimals)
+                .HasForeignKey(c => c.idAnimal);
         }
     }
 }

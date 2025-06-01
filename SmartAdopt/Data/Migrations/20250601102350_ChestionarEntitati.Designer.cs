@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartAdopt.Data;
 
@@ -11,9 +12,11 @@ using SmartAdopt.Data;
 namespace SmartAdopt.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250601102350_ChestionarEntitati")]
+    partial class ChestionarEntitati
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,22 +250,6 @@ namespace SmartAdopt.Data.Migrations
                     b.ToTable("Animals");
                 });
 
-            modelBuilder.Entity("SmartAdopt.Models.AnimalAdoptat", b =>
-                {
-                    b.Property<int>("idAnimalAdoptat")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idAnimalAdoptat"));
-
-                    b.Property<int>("counter")
-                        .HasColumnType("int");
-
-                    b.HasKey("idAnimalAdoptat");
-
-                    b.ToTable("AnimalAdoptats");
-                });
-
             modelBuilder.Entity("SmartAdopt.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -351,9 +338,6 @@ namespace SmartAdopt.Data.Migrations
                     b.Property<bool>("CompletedProfile")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RaspChestionaridRasp1")
-                        .HasColumnType("int");
-
                     b.Property<string>("adresa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -369,8 +353,6 @@ namespace SmartAdopt.Data.Migrations
 
                     b.HasIndex("ApplicationUserId")
                         .IsUnique();
-
-                    b.HasIndex("RaspChestionaridRasp1");
 
                     b.ToTable("Clients");
                 });
@@ -595,13 +577,7 @@ namespace SmartAdopt.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartAdopt.Models.RaspChestionar", "RaspChestionar")
-                        .WithMany()
-                        .HasForeignKey("RaspChestionaridRasp1");
-
                     b.Navigation("ApplicationUser");
-
-                    b.Navigation("RaspChestionar");
                 });
 
             modelBuilder.Entity("SmartAdopt.Models.Comanda", b =>

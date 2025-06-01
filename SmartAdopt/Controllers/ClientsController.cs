@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartAdopt.Data;
 using SmartAdopt.Models;
+using System.Linq;
 
 namespace SmartAdopt.Controllers
 {
@@ -233,6 +234,169 @@ namespace SmartAdopt.Controllers
                 .ToListAsync();
 
             return View(orders);
+        }
+
+        public async Task<IActionResult> Chestionar()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
+            var client = await db.Clients
+                .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+
+            if (client == null)
+            {
+                TempData["message"] = "Client not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            if (client.idRaspChestionar == 0)
+            {
+                ViewBag.Chestionar = 0;
+                return View(new ChestionarViewModel());
+            }
+            else
+            {
+                client = await db.Clients
+                .Include(c => c.RaspChestionar)
+                .ThenInclude(rc => rc.RaspAnimals)
+                .ThenInclude(ra => ra.Animal)
+                .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+
+                var recommendedAnimals = await db.RaspChestionars
+                    .Where(rc => rc.idRasp == client.idRaspChestionar)
+                    .SelectMany(rc => rc.RaspAnimals)
+                    .Select(ra => ra.Animal)
+                    .Take(5)
+                    .ToListAsync();
+
+                ViewBag.Chestionar = 1;
+                ViewBag.RecommendedAnimals = recommendedAnimals;
+                return View();
+            }
+            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Chestionar(ChestionarViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var client = await db.Clients.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+            if (client == null)
+            {
+                TempData["message"] = "Client not found.";
+                return RedirectToAction("Index", "Home");
+            }
+
+            var recommendedAnimals = await GetRecommendedAnimalsAsync(model);
+
+            var raspChestionar = new RaspChestionar { idClient = client.idClient };
+            db.RaspChestionars.Add(raspChestionar);
+            await db.SaveChangesAsync(); 
+
+            client.idRaspChestionar = raspChestionar.idRasp;
+            db.Clients.Update(client); 
+            await db.SaveChangesAsync(); 
+
+            foreach (var animal in recommendedAnimals)
+            {
+                db.RaspAnimals.Add(new RaspAnimal
+                {
+                    idRasp = raspChestionar.idRasp,
+                    idAnimal = animal.idAnimal
+                });
+            }
+            await db.SaveChangesAsync(); 
+
+            return RedirectToAction("Chestionar");
+        }
+
+        private async Task<List<Animal>> GetRecommendedAnimalsAsync(ChestionarViewModel model)
+        {
+            var animals = await db.Animals.ToListAsync();
+
+            int CalculateTieredScore(int userValue, int animalValue)
+            {
+                int diff = Math.Abs(userValue - animalValue);
+                return diff switch
+                {
+                    0 => 10,  
+                    1 => 7,   
+                    2 => 5,   
+                    3 => 4,   
+                    4 => 1,   
+                    _ => 0    
+                };
+            }
+
+            var scoredAnimals = animals.Select(a => new
+            {
+                Animal = a,
+                Score = 0 
+                          // 1. LivingSituation: Apartment or House
+                        + (model.LivingSituation == "Apartment" && a.marime <= 3 ? 10 : 0)
+                        + (model.LivingSituation == "House" && a.marime > 3 ? 10 : 0)
+
+                        // 2. HasYard: Energy level
+                        + (model.HasYard && a.nivel_energie >= 3 ? 10 : 0)
+                        + (!model.HasYard && a.nivel_energie <= 2 ? 10 : 0)
+
+                        // 3. ExerciseTime: Attention required
+                        + (model.ExerciseTime == "Less than 30 minutes" && a.nivel_atentie_necesara <= 2 ? 10 : 0)
+                        + (model.ExerciseTime == "30 minutes to 1 hour" && a.nivel_atentie_necesara == 3 ? 10 : 0)
+                        + (model.ExerciseTime == "More than 1 hour" && a.nivel_atentie_necesara >= 4 ? 10 : 0)
+
+                        // 4. HasOtherPets and HasChildren: Adaptability
+                        + (model.HasOtherPets && model.HasChildren && a.nivel_adaptabilitate >= 4 ? 10 : 0)
+                        + ((model.HasOtherPets ^ model.HasChildren) && (a.nivel_adaptabilitate == 2 || a.nivel_adaptabilitate == 3) ? 10 : 0)
+                        + (!model.HasOtherPets && !model.HasChildren && a.nivel_adaptabilitate == 1 ? 10 : 0)
+
+                        // 5. Numerical preferences with tiered scoring
+                        + CalculateTieredScore(model.PreferredSize, a.marime)
+                        + CalculateTieredScore(model.AttentionLevel, a.nivel_atentie_necesara)
+                        + CalculateTieredScore(model.PreferredAgeGroup, a.grupa_varsta)
+                        + CalculateTieredScore(model.AdaptabilityImportance, a.nivel_adaptabilitate)
+            })
+            .OrderByDescending(x => x.Score)
+            .Select(x => x.Animal)
+            .Take(5)
+            .ToList();
+
+            return scoredAnimals;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetChestionar()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var client = await db.Clients.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+            if (client == null)
+            {
+                TempData["message"] = "Client not found.";
+                return RedirectToAction("Index", "Home");
+            }
+            var chestionar = await db.RaspChestionars.FirstOrDefaultAsync(c => c.idRasp == client.idRaspChestionar);
+            if (chestionar != null)
+            {
+               var raspAnimal = await db.RaspAnimals.Where(c => c.idRasp == client.idRaspChestionar).ToListAsync();
+                if(raspAnimal.Any())
+                {
+                    db.RaspAnimals.RemoveRange(raspAnimal);
+                    await db.SaveChangesAsync();
+                }
+                 
+                db.RaspChestionars.Remove(chestionar);
+                await db.SaveChangesAsync();
+               
+            }
+
+            client.idRaspChestionar = 0;
+
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Chestionar");
         }
     }
 }
