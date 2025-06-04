@@ -1,8 +1,4 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-}
-
-@{
     bool isAdmin = User.IsInRole("Admin");
     bool isClient = User.IsInRole("Client");
 }
@@ -10,16 +6,14 @@
     <style>
         h2 {
             font-size: 3em;
-            margin-bottom: 50px; /* Spatiere crescuta pentru titlu */
-            font-family: 'Dancing Script', cursive; /* Font decorativ pentru titlu */
+            margin-bottom: 50px; 
+            font-family: 'Dancing Script', cursive;
         }
-
         h4 {
             font-size: 2em;
-            margin-bottom: 50px; /* Spatiere crescuta pentru titlu */
-            font-family: 'Dancing Script', cursive; /* Font decorativ pentru titlu */
+            margin-bottom: 50px; 
+            font-family: 'Dancing Script', cursive;
         }
-
     </style>
 </head>
 @if (isAdmin == false && isClient == false)

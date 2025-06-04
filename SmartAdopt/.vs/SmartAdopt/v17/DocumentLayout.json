@@ -1,71 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\views\\admins\\statisticsraport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:views\\admins\\statisticsraport.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\controllers\\adminscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:controllers\\adminscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|c:\\users\\teona\\desktop\\smartadopt\\smartadopt\\models\\animaladoptat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E1071AD4-4426-4BE6-A42A-CAA548BD3266}|SmartAdopt.csproj|solutionrelative:models\\animaladoptat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "StatisticsRaport.cshtml",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\StatisticsRaport.cshtml",
-              "RelativeDocumentMoniker": "Views\\Admins\\StatisticsRaport.cshtml",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Views\\Admins\\StatisticsRaport.cshtml",
-              "RelativeToolTip": "Views\\Admins\\StatisticsRaport.cshtml",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAAAHUAAABCAQAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-06-01T19:21:26.431Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AnimalAdoptat.cs",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Models\\AnimalAdoptat.cs",
-              "RelativeDocumentMoniker": "Models\\AnimalAdoptat.cs",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Models\\AnimalAdoptat.cs",
-              "RelativeToolTip": "Models\\AnimalAdoptat.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-01T19:16:39.44Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AdminsController.cs",
-              "DocumentMoniker": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Controllers\\AdminsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AdminsController.cs",
-              "ToolTip": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\Controllers\\AdminsController.cs",
-              "RelativeToolTip": "Controllers\\AdminsController.cs",
-              "ViewState": "AgIAAOUAAAAAAAAAAAAAAPIAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-01T18:55:37.296Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
 
-        /* Am adaugat spatiu intre cele doua casete: email si password */
+        /* Spatiu intre cele doua casete: email si password */
         .form-floating + .form-floating {
             margin-top: 15px;
         }
@@ -19,11 +19,11 @@
         .form-floating input[type="email"],
         .form-floating input[type="password"] {
             background-color: rgba(255, 255, 255, 0.5); 
-            border: 1px solid #ced4da; /* Menține bordura pentru claritate */
+            border: 1px solid #ced4da; 
         }
 
         .form-floating label {
-            color: #000; /* Culorea textului pentru claritate */
+            color: #000; 
         }
 
     </style>
@@ -60,13 +60,13 @@
                 </div>
                 <div class="text-dark">
                     <p >
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a id="forgot-password" asp-page="./ForgotPassword">V-ati uitat parola?</a>
                     </p>
                     <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Inregistrare cu un cont nou</a>
                     </p>
                     <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Retrimitere email de confirmare</a>
                     </p>
                 </div>
             </form>

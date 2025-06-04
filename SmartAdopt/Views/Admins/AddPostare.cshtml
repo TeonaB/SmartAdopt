@@ -1,11 +1,7 @@
 ﻿@model SmartAdopt.Models.Postare
 
-@{
-    ViewData["Title"] = "Adăugare Postare";
-}
-
 <div class="title-wrapper mb-4">
-    <h2 class="text-center text-white fw-bold">Adăugare Postare</h2>
+    <h2 class="text-center text-white fw-bold">Adaugare Postare</h2>
 </div>
 
 <div class="container main-container-dark">
@@ -24,73 +20,66 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary">Adaugă Postare</button>
-            <a class="btn btn-secondary" href="@Url.Action("Index", "Postares")">Înapoi la Postări</a>
+            <button type="submit" class="btn btn-primary">Adauga Postare</button>
+            <a class="btn btn-secondary" href="@Url.Action("Index", "Postares")">Inapoi la Postari</a>
         </div>
     </form>
 </div>
 
+
+
+
 <style>
     .title-wrapper {
-        background: linear-gradient(90deg, #e6b8a5, #d89f84); /* Deeper coral-beige gradient */
+        background: linear-gradient(90deg, #e6b8a5, #d89f84);
         padding: 15px;
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
-
     .main-container-light {
-        background-color: #fafafa; /* Very light gray background */
+        background-color: #fafafa; 
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        color: #333; /* Dark gray text for contrast */
+        color: #333; 
     }
-
     .form-control {
-        background-color: #ffffff; /* White background for inputs */
-        border: 1px solid #ddd; /* Light gray border */
-        color: #333; /* Dark text for readability */
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        color: #333; 
         border-radius: 6px;
     }
-
     .form-control:focus {
         background-color: #ffffff;
         color: #333;
-        border-color: #ff6f61; /* Coral accent on focus */
-        box-shadow: 0 0 5px rgba(255, 111, 97, 0.5); /* Coral shadow */
+        border-color: #ff6f61; 
+        box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
     }
-
     .form-label {
         font-weight: 500;
-        color: #555; /* Medium gray for labels */
+        color: #555;
     }
-
     .text-dark {
-        color: #333 !important; /* Consistent dark text */
+        color: #333 !important; 
     }
-
     .btn-primary {
-        background-color: #4CAF50; /* Soft forest green */
+        background-color: #4CAF50;
         border-color: #4CAF50;
         color: #ffffff;
     }
-
-        .btn-primary:hover {
-            background-color: #45a049; /* Darker green on hover */
-            border-color: #45a049;
-        }
-
+    .btn-primary:hover {
+        background-color: #45a049; 
+        border-color: #45a049;
+    }
     .btn-secondary {
-        background-color: #ff8780; /* Light coral */
+        background-color: #ff8780; 
         border-color: #ff8780;
         color: #ffffff;
     }
-
-        .btn-secondary:hover {
-            background-color: #ff6f61; /* Slightly darker coral on hover */
-            border-color: #ff6f61;
-        }
-
+    .btn-secondary:hover {
+        background-color: #ff6f61;
+        border-color: #ff6f61;
+    }
 </style>
 
 @section Scripts {

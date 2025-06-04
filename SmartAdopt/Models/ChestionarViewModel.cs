@@ -3,28 +3,25 @@
 public class ChestionarViewModel
 {
     [Required]
-    public string LivingSituation { get; set; } 
+    public string Locuinta { get; set; } 
     [Required]
-    public bool HasYard { get; set; }
+    public bool GradinaBool { get; set; }
     [Required]
-    public string ExerciseTime { get; set; } 
+    public string TimpMiscare { get; set; } 
     [Required]
-    public bool HasOtherPets { get; set; }
+    public bool AnimaleBool { get; set; }
     [Required]
-    public bool HasChildren { get; set; }
-    [Required]
-    [Range(1, 5)]
-    public int PreferredSize { get; set; }
+    public bool CopiiBool { get; set; }
     [Required]
     [Range(1, 5)]
-    public int AttentionLevel { get; set; }
+    public int Marime { get; set; }
     [Required]
     [Range(1, 5)]
-    public int ExperienceLevel { get; set; }
+    public int NivelAtentie { get; set; }
     [Required]
     [Range(1, 5)]
-    public int PreferredAgeGroup { get; set; }
+    public int GrupVarsta { get; set; }
     [Required]
     [Range(1, 5)]
-    public int AdaptabilityImportance { get; set; }
+    public int Adaptabilitate { get; set; }
 }

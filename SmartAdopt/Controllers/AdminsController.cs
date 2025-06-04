@@ -25,45 +25,47 @@ namespace SmartAdopt.Controllers
             _signInManager = signInManager;
             _env = env;
         }
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return Challenge();
-            }
+            if (user == null) return RedirectToAction("Index", "Home");
             var admin = await db.Admins.FirstOrDefaultAsync(s => s.ApplicationUserId == user.Id);
 
             ViewBag.AnimalCount = await db.Animals.CountAsync();
-            ViewBag.ComenziCount = await db.Comandas.Where(c => c.stare != "Respinsă").CountAsync();
+            ViewBag.ComenziCount = await db.Comandas.Where(c => c.stare != "Respinsa").CountAsync();
 
             return View(user);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AddAnimal()
         {
             return View(new Animal());
         }
 
+
         private string databaseFileName;
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAnimal(Animal animal, IFormFile? imageFile)
         {
-            // Verificam daca exista imaginea in request 
+
             if (imageFile != null && imageFile.Length > 0)
             {
                 // Generam calea de stocare a fisierului
                 var storagePath = Path.Combine(
-                _env.WebRootPath, // Preluam calea folderului wwwroot
-                "images/animals", // Adaugam calea folderului images
-                imageFile.FileName // Numele fisierului
+                _env.WebRootPath, 
+                "images/animals", 
+                imageFile.FileName 
                 );
 
-                // Generam calea de afisare a fisierului care va fi stocata in baza de date
+                // Generam calea de afisare a fisierului
                 databaseFileName = "/images/animals/" + imageFile.FileName;
 
-                // Uploadam fisierul la calea de storage
+                // Uploadam fisierul la cale
                 using (var fileStream = new FileStream(storagePath, FileMode.Create))
                 {
                     await imageFile.CopyToAsync(fileStream);
@@ -74,7 +76,6 @@ namespace SmartAdopt.Controllers
                 databaseFileName = "/images/logo.png";
             }
 
-            // Salvam storagePath-ul in baza de date
             animal.ImagePath = databaseFileName;
             db.Animals.Add(animal);
             await db.SaveChangesAsync();
@@ -83,12 +84,13 @@ namespace SmartAdopt.Controllers
 
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditAnimal(int id)
         {
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit";
+                TempData["message"] = "Animalul nu a fost gasit";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Animals");
             }
@@ -96,7 +98,7 @@ namespace SmartAdopt.Controllers
             return View(animal);
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAnimal(int id, Animal animal, IFormFile ImagePath)
@@ -111,7 +113,7 @@ namespace SmartAdopt.Controllers
             var existingAnimal = await db.Animals.AsNoTracking().FirstOrDefaultAsync(a => a.idAnimal == id);
             if (existingAnimal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit";
+                TempData["message"] = "Animalul nu a fost gasit";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Animals");
             }
@@ -120,26 +122,24 @@ namespace SmartAdopt.Controllers
             {
                 // Generam calea de stocare a fisierului
                 var storagePath = Path.Combine(
-                _env.WebRootPath, // Preluam calea folderului wwwroot
-                "images/animals", // Adaugam calea folderului images
-                ImagePath.FileName // Numele fisierului
+                _env.WebRootPath,
+                "images/animals",
+                ImagePath.FileName
                 );
 
-                // Generam calea de afisare a fisierului care va fi stocata in baza de date
+                // Generam calea de afisare a fisierului
                 databaseFileName = "/images/animals/" + ImagePath.FileName;
 
-                // Uploadam fisierul la calea de storage
+                // Uploadam fisierul la cale
                 using (var fileStream = new FileStream(storagePath, FileMode.Create))
                 {
                     await ImagePath.CopyToAsync(fileStream);
                 }
 
-                // Update the animal's imageUrl with the new path
                 animal.ImagePath = databaseFileName;
             }
             else
             {
-                // No new image uploaded; retain the existing imageUrl
                 animal.ImagePath = existingAnimal.ImagePath;
             }
 
@@ -147,39 +147,36 @@ namespace SmartAdopt.Controllers
             {
                 db.Update(animal);
                 await db.SaveChangesAsync();
-                TempData["message"] = "Animalul a fost actualizat cu succes";
+                TempData["message"] = "Animalul a fost actualizat";
                 TempData["messageType"] = "success";
             }
             catch (DbUpdateException)
             {
-                TempData["message"] = "A apărut o eroare la actualizarea animalului";
+                TempData["message"] = "A aparut o eroare la actualizarea animalului";
                 TempData["messageType"] = "error";
             }
             return RedirectToAction("Index", "Animals");
         }
 
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAnimal(int id)
         {
 
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit";
+                TempData["message"] = "Animalul nu a fost gasit";
                 return RedirectToAction("Index", "Animals");
             }
 
-            var orders = await db.Comandas
-                .Where(c => c.idAnimal == id)
-                .ToListAsync();
-
+            var orders = await db.Comandas.Where(c => c.idAnimal == id).ToListAsync();
             if (orders.Any())
             {
-                var hasNonRejectedOrders = orders.Any(c => c.stare != "Respinsă");
+                var areComenzi = orders.Any(c => c.stare != "Respinsa");
 
-                if (hasNonRejectedOrders)
+                if (areComenzi)
                 {
-                    TempData["message"] = "Animalul nu poate fi șters deoarece are comenzi asociate care nu sunt respinse";
+                    TempData["message"] = "Animalul nu poate fi sters deoarece are comenzi asociate care nu sunt respinse";
                     TempData["messageType"] = "warning";
                     return RedirectToAction("Index", "Animals");
                 }
@@ -199,30 +196,28 @@ namespace SmartAdopt.Controllers
                 db.Animals.Remove(animal);
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Animalul a fost șters cu succes";
+                TempData["message"] = "Animalul a fost sters";
             }
             catch (Exception ex)
             {
-                TempData["message"] = "A apărut o eroare la ștergerea animalului: " + ex.Message;
+                TempData["message"] = "A aparut o eroare la stergerea animalului: " + ex.Message;
             }
 
             return RedirectToAction("Index", "Animals");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAnimalTotal(int id)
         {
 
             var animal = await db.Animals.FindAsync(id);
             if (animal == null)
             {
-                TempData["message"] = "Animalul nu a fost găsit";
+                TempData["message"] = "Animalul nu a fost gasit";
                 return RedirectToAction("Index", "Animals");
             }
 
-            var orders = await db.Comandas
-                .Where(c => c.idAnimal == id)
-                .ToListAsync();
-
+            var orders = await db.Comandas.Where(c => c.idAnimal == id).ToListAsync();
             if (orders.Any())
             {
                 db.Comandas.RemoveRange(orders);
@@ -241,88 +236,85 @@ namespace SmartAdopt.Controllers
                 animalsAdoptat.counter++;
                 await db.SaveChangesAsync();
                 
-                TempData["message"] = "Animalul a fost adoptat cu succes";
+                TempData["message"] = "Animalul a fost adoptat";
             }
             catch (Exception ex)
             {
-                TempData["message"] = "A apărut o eroare la ștergerea animalului: " + ex.Message;
+                TempData["message"] = "A aparut o eroare la stergerea animalului: " + ex.Message;
             }
 
             return RedirectToAction("Index", "Animals");
         }
 
-        public async Task<IActionResult> ShowOrders()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ShowComenzi()
         {
-            var orders = await db.Comandas
+            var comenzi = await db.Comandas
                 .Include(c => c.Animal)
                 .Include(c => c.Client)
                 .ThenInclude(cl => cl.ApplicationUser)
                 .OrderByDescending(c => c.data_comenzii)
                 .ToListAsync();
+            var comenziacceptate = comenzi.Where(c => c.stare == "Finalizata").ToList();
+            var comenzipending = comenzi.Where(c => c.stare == "In asteptare").ToList();
 
-            var acceptedOrders = orders
-                .Where(c => c.stare == "Finalizată")
-                .ToList();
-
-            var pendingOrders = orders
-                .Where(c => c.stare == "În așteptare")
-                .ToList();
-
-            ViewData["AcceptedOrders"] = acceptedOrders;
-            ViewData["PendingOrders"] = pendingOrders;
+            ViewData["comenziacceptate"] = comenziacceptate;
+            ViewData["comenzipending"] = comenzipending;
 
             return View();
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AcceptOrder(int id)
+        public async Task<IActionResult> AcceptComanda(int id)
         {
-            var order = await db.Comandas.FindAsync(id);
-            if (order == null)
+            var comanda = await db.Comandas.FindAsync(id);
+            if (comanda == null)
             {
-                TempData["message"] = "Comanda nu a fost găsită";
+                TempData["message"] = "Comanda nu a fost gasita";
                 TempData["messageType"] = "error";
-                return RedirectToAction("ShowOrders");
+                return RedirectToAction("ShowComenzi");
             }
 
-            order.stare = "Finalizată";
-            db.Update(order);
+            comanda.stare = "Finalizata";
+            db.Update(comanda);
             await db.SaveChangesAsync();
 
-            TempData["message"] = "Comanda a fost acceptată cu succes";
+            TempData["message"] = "Comanda a fost acceptata";
             TempData["messageType"] = "success";
-            return RedirectToAction("ShowOrders");
+            return RedirectToAction("ShowComenzi");
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RejectOrder(int id)
+        public async Task<IActionResult> RejectComanda(int id)
         {
-            var order = await db.Comandas.FindAsync(id);
-            if (order == null)
+            var comanda = await db.Comandas.FindAsync(id);
+            if (comanda == null)
             {
-                TempData["message"] = "Comanda nu a fost găsită";
+                TempData["message"] = "Comanda nu a fost gasita";
                 TempData["messageType"] = "error";
-                return RedirectToAction("ShowOrders");
+                return RedirectToAction("ShowComenzi");
             }
 
-            order.stare = "Respinsă";
-            db.Update(order);
+            comanda.stare = "Respinsa";
+            db.Update(comanda);
             await db.SaveChangesAsync();
 
-            TempData["message"] = "Comanda a fost respinsă";
+            TempData["message"] = "Comanda a fost respinsa";
             TempData["messageType"] = "warning";
-            return RedirectToAction("ShowOrders");
+            return RedirectToAction("ShowComenzi");
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AddPostare()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddPostare(Postare postare)
@@ -331,22 +323,22 @@ namespace SmartAdopt.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
                 postare.ApplicationUserId = user.Id;
-                // Set the post date to now
                 postare.data_postarii = DateTime.Now;
 
                 db.Add(postare);
                 await db.SaveChangesAsync();
-                TempData["message"] = "Postarea a fost adăugată cu succes";
+                TempData["message"] = "Postarea a fost adaugata";
                 return RedirectToAction("Index", "Postares");
             }
             catch (Exception)
             {
-                TempData["message"] = "A apărut o eroare la adăugarea postării";
+                TempData["message"] = "A aparut o eroare la adaugarea postarii";
                 TempData["messageType"] = "error";
             }
             return RedirectToAction("Index", "Postares");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeletePostare(int id)
         {
             try
@@ -356,7 +348,7 @@ namespace SmartAdopt.Controllers
 
                 if (postare == null)
                 {
-                    TempData["message"] = "Postarea nu a fost găsită";
+                    TempData["message"] = "Postarea nu a fost gasita";
                     TempData["messageType"] = "error";
                     return RedirectToAction("Index", "Postares");
                 }
@@ -369,37 +361,39 @@ namespace SmartAdopt.Controllers
                 db.Postares.Remove(postare);
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Postarea a fost ștearsă cu succes";
+                TempData["message"] = "Postarea a fost stearsa";
                 TempData["messageType"] = "success";
             }
             catch (Exception)
             {
-                TempData["message"] = "A apărut o eroare la ștergerea postării";
+                TempData["message"] = "A aparut o eroare la stergerea postarii";
                 TempData["messageType"] = "error";
             }
 
             return RedirectToAction("Index", "Postares");
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditPostare(int id)
         {
             var postare = await db.Postares.FindAsync(id);
             if (postare == null)
             {
-                TempData["message"] = "Postarea nu a fost găsită";
+                TempData["message"] = "Postarea nu a fost gasita";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Postares");
             }
             return View(postare);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPostare(int id, Postare postare)
         {
             if (id != postare.idPostare)
             {
-                TempData["message"] = "ID-ul postării nu se potrivește";
+                TempData["message"] = "ID-ul postarii nu se potriveste";
                 TempData["messageType"] = "error";
                 return RedirectToAction("Index", "Postares");
             }
@@ -408,7 +402,7 @@ namespace SmartAdopt.Controllers
                 var existingPostare = await db.Postares.FindAsync(id);
                 if (existingPostare == null)
                 {
-                    TempData["message"] = "Postarea nu a fost găsită";
+                    TempData["message"] = "Postarea nu a fost gasita";
                     TempData["messageType"] = "error";
                     return RedirectToAction("Index", "Postares");
                 }
@@ -419,20 +413,21 @@ namespace SmartAdopt.Controllers
                 db.Update(existingPostare);
                 await db.SaveChangesAsync();
 
-                TempData["message"] = "Postarea a fost actualizată cu succes";
+                TempData["message"] = "Postarea a fost actualizata";
                 TempData["messageType"] = "success";
                 return RedirectToAction("Index", "Postares");
             }
             catch (Exception)
             {
-                TempData["message"] = "A apărut o eroare la actualizarea postării";
+                TempData["message"] = "A aparut o eroare la actualizarea postarii";
                 TempData["messageType"] = "error";
             }
 
             return View(postare);
         }
 
-        public async Task<IActionResult> ShowAll()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ShowUseri()
         {
             var users = db.Users.OrderBy(u => u.nume);
 
@@ -443,21 +438,17 @@ namespace SmartAdopt.Controllers
                 var role = roles.FirstOrDefault() ?? "Client";
                 usersWithRoles.Add((user, role));
             }
-
-            var sortedUsers = usersWithRoles
-                .OrderBy(ur => ur.Role == "Admin" ? 0 : 1)
-                .ThenBy(ur => ur.User.nume);
+            var sortedUsers = usersWithRoles.OrderBy(ur => ur.Role == "Admin" ? 0 : 1).ThenBy(ur => ur.User.nume);
 
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
             }
-
-
             ViewBag.UsersList = sortedUsers;
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             try
@@ -465,9 +456,9 @@ namespace SmartAdopt.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (user == null)
                 {
-                    TempData["message"] = "Utilizatorul nu a fost găsit.";
+                    TempData["message"] = "Utilizatorul nu a fost gasit.";
                     TempData["messageType"] = "error";
-                    return RedirectToAction("ShowAll", "Admins");
+                    return RedirectToAction("ShowUseri", "Admins");
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
@@ -475,13 +466,9 @@ namespace SmartAdopt.Controllers
 
                 if (role == "Admin")
                 {
-                    var admin = await db.Admins
-                        .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+                    var admin = await db.Admins.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
 
-                    var postari = await db.Postares
-                        .Where(p => p.ApplicationUserId == user.Id)
-                        .ToListAsync();
-
+                    var postari = await db.Postares.Where(p => p.ApplicationUserId == user.Id).ToListAsync();
                     if (postari.Any())
                     {
                         foreach (var postare in postari)
@@ -509,31 +496,21 @@ namespace SmartAdopt.Controllers
                     if (client != null)
                     {
 
-                        var comenzi = await db.Comandas
-                            .Where(c => c.idClient == client.idClient)
-                            .ToListAsync();
-
+                        var comenzi = await db.Comandas.Where(c => c.idClient == client.idClient).ToListAsync();
                         if (comenzi.Any())
                         {
                             db.Comandas.RemoveRange(comenzi);
                             await db.SaveChangesAsync();
                         }
 
-                        var comentarii = await db.Comentarius
-                            .Where(c => c.idClient == client.idClient)
-                            .ToListAsync();
-
+                        var comentarii = await db.Comentarius.Where(c => c.idClient == client.idClient).ToListAsync();
                         if (comentarii.Any())
                         {
                             db.Comentarius.RemoveRange(comentarii);
                             await db.SaveChangesAsync();
                         }
 
-                        var raspChestionars = await db.RaspChestionars
-                        .Where(rc => rc.idClient == client.idClient)
-                        .Include(rc => rc.RaspAnimals) 
-                        .ToListAsync();
-
+                        var raspChestionars = await db.RaspChestionars.Where(rc => rc.idClient == client.idClient).Include(rc => rc.RaspAnimals).ToListAsync();
                         if (raspChestionars.Any())
                         {
                             foreach (var raspChestionar in raspChestionars)
@@ -554,21 +531,21 @@ namespace SmartAdopt.Controllers
                 var result = await _userManager.DeleteAsync(user);
                 if (!result.Succeeded)
                 {
-                    TempData["message"] = "Eroare la ștergerea utilizatorului: " + string.Join(", ", result.Errors.Select(e => e.Description));
+                    TempData["message"] = "Eroare la stergerea utilizatorului: " + string.Join(", ", result.Errors.Select(e => e.Description));
                     TempData["messageType"] = "error";
-                    return RedirectToAction("ShowAll", "Admins");
+                    return RedirectToAction("ShowUseri", "Admins");
                 }
 
-                TempData["message"] = "Utilizatorul a fost șters cu succes.";
+                TempData["message"] = "Utilizatorul a fost sters";
                 TempData["messageType"] = "success";
             }
             catch (Exception ex)
             {
-                TempData["message"] = "A apărut o eroare: " + ex.Message;
+                TempData["message"] = "A aparut o eroare: " + ex.Message;
                 TempData["messageType"] = "error";
             }
 
-            return RedirectToAction("ShowAll", "Admins");
+            return RedirectToAction("ShowUseri", "Admins");
         }
 
         [Authorize(Roles = "Admin")]
@@ -579,14 +556,13 @@ namespace SmartAdopt.Controllers
                 var user = await _userManager.FindByIdAsync(id);
                 if (user == null)
                 {
-                    TempData["message"] = "Utilizatorul nu a fost găsit.";
+                    TempData["message"] = "Utilizatorul nu a fost gasit.";
                     TempData["messageType"] = "error";
-                    return RedirectToAction("ShowAll", "Admins");
+                    return RedirectToAction("ShowUseri", "Admins");
                 }
 
                 var roles = await _userManager.GetRolesAsync(user);
                 var currentRole = roles.FirstOrDefault();
-
 
                 string newRole = "";
                 if (currentRole == "Admin")
@@ -600,36 +576,25 @@ namespace SmartAdopt.Controllers
 
                 if (currentRole =="Client")
                 {
-                    var client = await db.Clients
-                       .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+                    var client = await db.Clients.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
 
                     if (client != null)
                     {
-                        var comenzi = await db.Comandas
-                            .Where(c => c.idClient == client.idClient)
-                            .ToListAsync();
-
+                        var comenzi = await db.Comandas.Where(c => c.idClient == client.idClient).ToListAsync();
                         if (comenzi.Any())
                         {
                             db.Comandas.RemoveRange(comenzi);
                             await db.SaveChangesAsync();
                         }
 
-                        var comentarii = await db.Comentarius
-                            .Where(c => c.idClient == client.idClient)
-                            .ToListAsync();
-
+                        var comentarii = await db.Comentarius.Where(c => c.idClient == client.idClient).ToListAsync();
                         if (comentarii.Any())
                         {
                             db.Comentarius.RemoveRange(comentarii);
                             await db.SaveChangesAsync();
                         }
 
-                        var raspChestionars = await db.RaspChestionars
-                        .Where(rc => rc.idClient == client.idClient)
-                        .Include(rc => rc.RaspAnimals)
-                        .ToListAsync();
-
+                        var raspChestionars = await db.RaspChestionars.Where(rc => rc.idClient == client.idClient).Include(rc => rc.RaspAnimals).ToListAsync();
                         if (raspChestionars.Any())
                         {
                             foreach (var raspChestionar in raspChestionars)
@@ -648,7 +613,6 @@ namespace SmartAdopt.Controllers
 
                     var admin = new Admin
                     {
-
                         ApplicationUserId = user.Id
                     };
                     db.Admins.Add(admin);
@@ -656,13 +620,9 @@ namespace SmartAdopt.Controllers
                 }
                 else
                 {
-                    var admin = await db.Admins
-                        .FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
+                    var admin = await db.Admins.FirstOrDefaultAsync(c => c.ApplicationUserId == user.Id);
 
-                    var postari = await db.Postares
-                        .Where(p => p.ApplicationUserId == user.Id)
-                        .ToListAsync();
-
+                    var postari = await db.Postares.Where(p => p.ApplicationUserId == user.Id).ToListAsync();
                     if (postari.Any())
                     {
                         foreach (var postare in postari)
@@ -684,12 +644,11 @@ namespace SmartAdopt.Controllers
 
                     var client = new Client
                     {
-
                         ApplicationUserId = user.Id,
                         idRaspChestionar = 0,
                         CompletedProfile = false,
-                        nr_telefon = " ",
-                        adresa = " "
+                        nr_telefon = "",
+                        adresa = ""
                     };
                     db.Clients.Add(client);
                     db.SaveChanges();
@@ -701,7 +660,7 @@ namespace SmartAdopt.Controllers
                     {
                         TempData["message"] = "Eroare la eliminarea rolului curent: " + string.Join(", ", removeResult.Errors.Select(e => e.Description));
                         TempData["messageType"] = "error";
-                        return RedirectToAction("ShowAll", "Admins");
+                        return RedirectToAction("ShowUseri", "Admins");
                     }
                 }
 
@@ -710,15 +669,15 @@ namespace SmartAdopt.Controllers
                 {
                     TempData["message"] = "Eroare la asignarea noului rol: " + string.Join(", ", addResult.Errors.Select(e => e.Description));
                     TempData["messageType"] = "error";
-                    return RedirectToAction("ShowAll", "Admins");
+                    return RedirectToAction("ShowUseri", "Admins");
                 }
    
             }
             catch (Exception ex)
             {
-                TempData["message"] = "A apărut o eroare: " + ex.Message;
+                TempData["message"] = "A aparut o eroare: " + ex.Message;
                 TempData["messageType"] = "error";
-                return RedirectToAction("ShowAll", "Admins");
+                return RedirectToAction("ShowUseri", "Admins");
             }
 
             var user2 = await _userManager.GetUserAsync(User);
@@ -729,61 +688,57 @@ namespace SmartAdopt.Controllers
             }
             else
             {
-                TempData["message"] = "Rolul utilizatorului a fost schimbat cu succes";
+                TempData["message"] = "Rolul utilizatorului a fost schimbat";
                 TempData["messageType"] = "success";
-                return RedirectToAction("ShowAll", "Admins");
+                return RedirectToAction("ShowUseri", "Admins");
             } 
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ViewClient(string id)
         {
             try
             {
-                var client = await db.Clients
-                    .Include(c => c.ApplicationUser)
-                    .Include(c => c.Comandas)
-                    .FirstOrDefaultAsync(c => c.ApplicationUserId == id);
+                var client = await db.Clients.Include(c => c.ApplicationUser).Include(c => c.Comandas).FirstOrDefaultAsync(c => c.ApplicationUserId == id);
 
                 if (client == null)
                 {
-                    TempData["message"] = "Clientul nu a fost găsit.";
+                    TempData["message"] = "Clientul nu a fost gasit.";
                     TempData["messageType"] = "error";
-                    return RedirectToAction("ShowAll", "Admins");
+                    return RedirectToAction("ShowUseri", "Admins");
                 }
-                var orders = await db.Comandas
-               .Where(c => c.idClient == client.idClient)
-               .Include(c => c.Animal)
-               .ToListAsync();
-                ViewBag.orders = orders;
+                var comenzi = await db.Comandas.Where(c => c.idClient == client.idClient).Include(c => c.Animal).ToListAsync();
+                ViewBag.comenzi = comenzi;
                 return View(client);
             }
             catch (Exception ex)
             {
-                TempData["message"] = "A apărut o eroare: " + ex.Message;
+                TempData["message"] = "A aparut o eroare: " + ex.Message;
                 TempData["messageType"] = "error";
-                return RedirectToAction("ShowAll", "Admins");
+                return RedirectToAction("ShowUseri", "Admins");
             }
         }
 
-        public async Task<IActionResult> StatisticsRaport()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Raport()
         {
-            // User Activity
-            var totalRegisteredUsers = await db.Clients.CountAsync();
-            var usersWithCompletedProfile = await db.Clients.CountAsync(c => c.CompletedProfile == true); 
-            var allUserIds = await db.Clients.Select(c => c.idClient).ToListAsync();
-            var usersWithComments = await db.Comentarius.Select(c => c.idClient).Distinct().ToListAsync();
-            var usersInteractedWithBlog = usersWithComments.Count;
+            // Pentru utilizatori
+            var totalUtilizatoriInregistrati = await db.Clients.CountAsync();
+            var utilizatoriCuProfilComplet = await db.Clients.CountAsync(c => c.CompletedProfile == true);
+            var totiIdUtilizatori = await db.Clients.Select(c => c.idClient).ToListAsync();
+            var utilizatoriCuComentarii = await db.Comentarius.Select(c => c.idClient).Distinct().ToListAsync();
+            var utilizatoriInteractiuniBlog = utilizatoriCuComentarii.Count;
 
-            // Recommendation Insights
-            var totalRecommendationsGenerated = await db.RaspChestionars.CountAsync();
-            var topRecommendedAnimals = await db.RaspAnimals
+            // Pentru recomandari
+            var totalRecomandariGenerat = await db.RaspChestionars.CountAsync();
+            var topAnimaleRecomandate = await db.RaspAnimals
                 .GroupBy(ra => ra.idAnimal)
-                .Select(g => new { AnimalId = g.Key, Count = g.Count() })
-                .OrderByDescending(g => g.Count)
+                .Select(g => new { IdAnimal = g.Key, Numar = g.Count() })
+                .OrderByDescending(g => g.Numar)
                 .Take(5)
-                .Join(db.Animals, g => g.AnimalId, a => a.idAnimal, (g, a) => new { a.nume, a.specie, Count = g.Count })
+                .Join(db.Animals, g => g.IdAnimal, a => a.idAnimal, (g, a) => new { a.nume, a.specie, Numar = g.Numar })
                 .ToListAsync();
-            var ordersFromRecommendations = await db.Comandas
+            var comenziDinRecomandari = await db.Comandas
                  .Join(db.Clients,
                      comanda => comanda.idClient,
                      client => client.idClient,
@@ -799,50 +754,50 @@ namespace SmartAdopt.Controllers
                      (x, ra) => new { x.comanda, x.client, x.rc, ra })
                  .CountAsync();
 
-            // Animal Data
-            var totalAnimals = await db.Animals.CountAsync();
-            var animalsBySpecies = await db.Animals
+            // Pentru animale
+            var totalAnimale = await db.Animals.CountAsync();
+            var animalePeSpecie = await db.Animals
                 .GroupBy(a => a.specie)
-                .Select(g => new { Species = g.Key, Count = g.Count() })
+                .Select(g => new { Specie = g.Key, Numar = g.Count() })
                 .ToListAsync();
-            var averageAttributes = new
+            var atributeMedii = new
             {
-                AvgSize = await db.Animals.AverageAsync(a => (double)a.marime),
-                AvgEnergy = await db.Animals.AverageAsync(a => (double)a.nivel_energie),
-                AvgAttention = await db.Animals.AverageAsync(a => (double)a.nivel_atentie_necesara),
-                AvgAdaptability = await db.Animals.AverageAsync(a => (double)a.nivel_adaptabilitate),
-                AvgAgeGroup = await db.Animals.AverageAsync(a => (double)a.grupa_varsta)
+                MarimeMedie = await db.Animals.AverageAsync(a => (double)a.marime),
+                EnergieMedie = await db.Animals.AverageAsync(a => (double)a.nivel_energie),
+                AtentieMedie = await db.Animals.AverageAsync(a => (double)a.nivel_atentie_necesara),
+                AdaptabilitateMedie = await db.Animals.AverageAsync(a => (double)a.nivel_adaptabilitate),
+                GrupaVarstaMedie = await db.Animals.AverageAsync(a => (double)a.grupa_varsta)
             };
-            var animalsNeverRecommended = await db.Animals
-                .GroupJoin(db.RaspAnimals, a => a.idAnimal, ra => ra.idAnimal, (a, ra) => new { Animal = a, HasRecommendation = ra.Any() })
-                .Where(x => !x.HasRecommendation)
+            var animaleNerecomandate = await db.Animals
+                .GroupJoin(db.RaspAnimals, a => a.idAnimal, ra => ra.idAnimal, (a, ra) => new { Animal = a, AreRecomandare = ra.Any() })
+                .Where(x => !x.AreRecomandare)
                 .Select(x => x.Animal)
                 .ToListAsync();
-            var animalsAdoptat = db.AnimalAdoptats.FirstOrDefault(c => c.idAnimalAdoptat == 1);
-            var totalAnimalsAdopted = animalsAdoptat.counter;
-            var orderStatuses = await db.Comandas
+            var animalAdoptat = db.AnimalAdoptats.FirstOrDefault(c => c.idAnimalAdoptat == 1);
+            var totalAnimaleAdoptate = animalAdoptat.counter;
+            var statusuriComenzi = await db.Comandas
                 .GroupBy(c => c.stare)
-                .Select(g => new { Status = g.Key, Count = g.Count() })
+                .Select(g => new { Stare = g.Key, Numar = g.Count() })
                 .ToListAsync();
 
-            // Prepare view model
-            var viewModel = new StatisticsReportViewModel
+            var model = new RaportStatisticiViewModel
             {
-                TotalRegisteredUsers = totalRegisteredUsers,
-                UsersWithCompletedProfile = usersWithCompletedProfile,
-                UsersInteractedWithBlog = usersInteractedWithBlog,
-                TotalRecommendationsGenerated = totalRecommendationsGenerated,
-                TopRecommendedAnimals = topRecommendedAnimals.Cast<dynamic>().ToList(),
-                OrdersFromRecommendations = ordersFromRecommendations,
-                TotalAnimals = totalAnimals,
-                AnimalsBySpecies = animalsBySpecies.Cast<dynamic>().ToList(),
-                AverageAttributes = averageAttributes,
-                AnimalsNeverRecommended = animalsNeverRecommended,
-                TotalAnimalsAdopted = totalAnimalsAdopted,
-                OrderStatuses = orderStatuses.Cast<dynamic>().ToList()
+                TotalUseri = totalUtilizatoriInregistrati,
+                UseriCuProfilCompletat = utilizatoriCuProfilComplet,
+                UseriCuBlog = utilizatoriInteractiuniBlog,
+                TotalRecomandari = totalRecomandariGenerat,
+                TopAnimaleRecomandate = topAnimaleRecomandate.Cast<dynamic>().ToList(),
+                ComenziDinRecomandari = comenziDinRecomandari,
+                TotalAnimale = totalAnimale,
+                AnimalePeSpecie = animalePeSpecie.Cast<dynamic>().ToList(),
+                AverageAtribute = atributeMedii,
+                AnimaleNerecomandate = animaleNerecomandate,
+                TotalAnimaleAdoptate = totalAnimaleAdoptate,
+                StatusComenzi = statusuriComenzi.Cast<dynamic>().ToList()
             };
 
-            return View(viewModel);
+            return View(model);
         }
+
     }
 }

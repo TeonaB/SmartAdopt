@@ -7,9 +7,9 @@ namespace SmartAdopt.Models
         [Key]
         public int idRasp { get; set; }
         public int idClient { get; set; }
-
-        // Navigation properties
         public virtual Client? Client { get; set; }
+
+
         public virtual ICollection<RaspAnimal>? RaspAnimals { get; set; }
     }
 }

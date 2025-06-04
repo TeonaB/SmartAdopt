@@ -27,9 +27,6 @@
 <h2 class="text-center">Faceti cunostinta cu prietenii vostri blanosi</h2>
 <br />
 
-
-
-<!-- Add Animal button for admins -->
 @if (User.IsInRole("Admin"))
 {
     <div class="d-flex justify-content-center mb-3">
@@ -37,7 +34,6 @@
     </div>
 }
 
-<!-- Search bar -->
 <form method="GET">
     <div class="input-group mb-3">
         <input type="text" class="form-control"
@@ -50,7 +46,6 @@
 </form>
 
 
-<!--Afisarea fiecarui animal pe rand-->
 <div class="row">
     @foreach (SmartAdopt.Models.Animal animal in ViewBag.Animals)
     {
@@ -70,74 +65,68 @@
                 }
                 @if (User.IsInRole("Client"))
                 {
-                    <a class="btn bg-albastru border-dark" href="/Clients/CreateOrder/@animal.idAnimal">Creeaza cerere adoptie</a>
+                    <a class="btn bg-albastru border-dark" href="/Clients/CreareComanda/@animal.idAnimal">Creeaza cerere adoptie</a>
                 }
             </div>
         </div>
     }
 </div>
 
+
+
+
+
 <style>
-
     .btn-group .btn {
-        margin-right: 5px; /* Optional: Adds spacing between buttons */
+        margin-right: 5px;
     }
-
-        .btn-group .btn:last-child {
-            margin-right: 0; /* Removes margin from the last button */
-        }
-
+    .btn-group .btn:last-child {
+        margin-right: 0;
+    }
     .alert-container {
         position: relative;
         animation: slideIn 0.5s ease-out;
     }
-
     .alert-custom {
-        background-color: #f8f9fa; /* Light gray background */
+        background-color: #f8f9fa;
         border: 1px solid #dee2e6;
-        color: #333; /* Dark text for readability */
+        color: #333; 
         font-size: 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 0.3s ease;
     }
-
-        .alert-custom:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-
+    .alert-container:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
     .message-text {
         font-weight: 500;
     }
     .btn-add-animal {
-        background-color: #4da8da; /* Bright light blue */
+        background-color: #4da8da; 
         color: white;
-        border: 1px solid #2e86ab; /* Slightly darker border for contrast */
+        border: 1px solid #2e86ab; 
         border-radius: 5px;
         padding: 10px 20px;
         font-weight: 500;
         transition: background-color 0.3s ease;
     }
-
-        .btn-add-animal:hover {
-            background-color: #66b3e0; /* Lighter blue on hover */
-            color: white;
-            text-decoration: none;
-        }
-
-    /* Search Button */
+    .btn-add-animal:hover {
+         background-color: #66b3e0; 
+         color: white;
+         text-decoration: none;
+    }
     .btn-search {
-        background-color: #28a745; /* Bright green (Bootstrap's success color) */
+        background-color: #28a745; 
         color: white;
-        border: 1px solid #218838; /* Slightly darker green border */
+        border: 1px solid #218838; 
         border-radius: 5px;
         padding: 10px 20px;
         font-weight: 500;
         transition: background-color 0.3s ease;
     }
-
-        .btn-search:hover {
-            background-color: #34c759; /* Lighter green on hover */
-            color: white;
-        }
+    .btn-search:hover {
+         background-color: #34c759; 
+         color: white;
+    }
 </style>

@@ -1,9 +1,5 @@
 ﻿@model SmartAdopt.Models.Client
 
-@{
-    ViewData["Title"] = "Edit Nr";
-}
-
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
@@ -18,7 +14,7 @@
     </div>
 }
 
-<h2 class="text-white">Edit Numar Telefon</h2>
+<h2 class="text-white">Editare Numar Telefon</h2>
 
 @using (Html.BeginForm(controllerName: "Clients", actionName: "EditNr", method: FormMethod.Post,
    routeValues: new { id = Model.idClient }))
@@ -36,4 +32,8 @@
     <br />
     <br />
     <button type="submit" class="btn btn-primary">Save</button>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

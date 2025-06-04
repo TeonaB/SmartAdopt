@@ -1,13 +1,9 @@
 ﻿@model SmartAdopt.Models.Comanda
 
-@{
-    ViewData["Title"] = "Creează o Comandă";
-}
-
-<h2 class="text-center mb-4">Creează o Comandă pentru @ViewBag.nume</h2>
+<h2 class="text-center mb-4">Plaseaza o Comanda pentru @ViewBag.nume</h2>
 
 <div class="container">
-    <form asp-action="CreateOrder" method="post">
+    <form asp-action="CreareComanda" method="post">
         @Html.AntiForgeryToken()
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -16,9 +12,9 @@
         <input type="hidden" asp-for="total_plata" />
 
         <div class="form-group">
-            <label asp-for="metoda_platii" class="control-label"></label>
+            <label asp-for="metoda_platii" class="control-label">Metoda Platii</label>
             <select asp-for="metoda_platii" class="form-control">
-                <option value="">Selectați metoda de plată</option>
+                <option value="">Selectati metoda de plata</option>
                 <option value="Card">Card</option>
                 <option value="Transfer Bancar">Transfer Bancar</option>
                 <option value="Numerar">Numerar</option>
@@ -27,7 +23,7 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="motivatie" class="control-label"></label>
+            <label asp-for="motivatie" class="control-label">Motivatie</label>
             <textarea asp-for="motivatie" class="form-control" rows="3"></textarea>
             <span asp-validation-for="motivatie" class="text-danger"></span>
         </div>

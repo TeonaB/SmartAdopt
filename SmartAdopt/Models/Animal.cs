@@ -43,7 +43,7 @@ namespace SmartAdopt.Models
         [Range(1.00, double.MaxValue, ErrorMessage = "Introdu o valoare > 1!")]
         public decimal pret { get; set; } 
 
-        // Navigation properties
+
         public virtual ICollection<RaspAnimal>? RaspAnimals { get; set; }
         public virtual ICollection<Comanda>? Comandas { get; set; }
     }

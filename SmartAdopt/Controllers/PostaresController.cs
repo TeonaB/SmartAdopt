@@ -26,15 +26,14 @@ namespace SmartAdopt.Controllers
             var search = "";
             var postari = db.Postares.Include(p => p.ApplicationUser)
                 .OrderByDescending(p => p.data_postarii);
-            //MOTOR DE CAUTARE
+            //searchBar
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
             {
-                // eliminam spatiile libere
+                //elimin spatiile
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
-                // Cautare in produs (Title si Description)
+                //cautarea
                 List<int> postareIds = db.Postares.Where(p => p.titlu.Contains(search) || p.descriere.Contains(search)).Select(a => a.idPostare).ToList();
 
-                // Lista produselor care contin cuvantul cautat
                 postari = db.Postares.Where(postare => postareIds.Contains(postare.idPostare)).Include(p => p.ApplicationUser)
                 .OrderByDescending(p => p.data_postarii);
             }
@@ -46,21 +45,14 @@ namespace SmartAdopt.Controllers
             {
                 ViewBag.Message = TempData["message"];
             }
-
             return View();
         }
 
         [Authorize(Roles = "Client,Admin")]
         public async Task<IActionResult> Show(int id)
         {
-            var postare = await db.Postares
-                .Include(p => p.ApplicationUser)
-                .FirstOrDefaultAsync(p => p.idPostare == id);
-            var comentarii = await db.Comentarius
-                .Where(c => c.idPostare == id)
-                .Include(c => c.Client)
-                .ThenInclude(c => c.ApplicationUser)
-                .ToListAsync();
+            var postare = await db.Postares.Include(p => p.ApplicationUser).FirstOrDefaultAsync(p => p.idPostare == id);
+            var comentarii = await db.Comentarius.Where(c => c.idPostare == id).Include(c => c.Client).ThenInclude(c => c.ApplicationUser).ToListAsync();
 
             if (postare == null)
             {

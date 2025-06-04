@@ -24,15 +24,14 @@ namespace SmartAdopt.Controllers
         {
             var search = "";
             var animals = db.Animals.OrderBy(a => a.pret).ThenBy(a => a.nume);
-            //MOTOR DE CAUTARE
+            //searchBar
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
             {
-                // eliminam spatiile libere
+                //scot spatii libere
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
-                // Cautare in produs (Title si Description)
+                //cautare in animal
                 List<int> animalIds = db.Animals.Where(p => p.nume.Contains(search) || p.rasa.Contains(search) || p.specie.Contains(search) || p.descriere.Contains(search) || Convert.ToString(p.varsta).Contains(search) || p.vaccinuri.Contains(search)).Select(a => a.idAnimal).ToList();
 
-                // Lista produselor care contin cuvantul cautat
                 animals = db.Animals.Where(animal => animalIds.Contains(animal.idAnimal)).OrderBy(a => a.pret).ThenBy(a => a.nume);
             }
 
@@ -43,7 +42,6 @@ namespace SmartAdopt.Controllers
             {
                 ViewBag.Message = TempData["message"];
             }
-
             return View();
         }
     }

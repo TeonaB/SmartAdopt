@@ -9,19 +9,19 @@
     <form asp-action="Chestionar" method="post" class="chestionar-form">
         <div class="form-group">
             <label>1. Unde Locuiti?</label>
-            <select asp-for="LivingSituation" class="form-control">
+            <select asp-for="Locuinta" class="form-control">
                 <option value="House">Casa</option>
                 <option value="Apartment">Apartament</option>
             </select>
         </div>
         <div class="form-group">
             <label>2. Aveti o curte?</label>
-            <label><input type="radio" asp-for="HasYard" value="true" /> Da</label>
-            <label><input type="radio" asp-for="HasYard" value="false" /> Nu</label>
+            <label><input type="radio" asp-for="GradinaBool" value="true" /> Da</label>
+            <label><input type="radio" asp-for="GradinaBool" value="false" /> Nu</label>
         </div>
         <div class="form-group">
             <label>3. Cat timp de miscare ii puteti oferi animalului vostru zilnic?</label>
-            <select asp-for="ExerciseTime" class="form-control">
+            <select asp-for="TimpMiscare" class="form-control">
                 <option value="Less than 30 minutes">Mai putin de 30 de minute</option>
                 <option value="30 minutes to 1 hour">Intre 30 de minute si o ora</option>
                 <option value="More than 1 hour">Mai mult de o ora</option>
@@ -29,29 +29,29 @@
         </div>
         <div class="form-group">
             <label>4. Detineti animale?</label>
-            <label><input type="radio" asp-for="HasOtherPets" value="true" /> Da</label>
-            <label><input type="radio" asp-for="HasOtherPets" value="false" /> Nu</label>
+            <label><input type="radio" asp-for="AnimaleBool" value="true" /> Da</label>
+            <label><input type="radio" asp-for="AnimaleBool" value="false" /> Nu</label>
         </div>
         <div class="form-group">
             <label>5. Aveti copii?</label>
-            <label><input type="radio" asp-for="HasChildren" value="true" /> Da</label>
-            <label><input type="radio" asp-for="HasChildren" value="false" /> Nu</label>
+            <label><input type="radio" asp-for="CopiiBool" value="true" /> Da</label>
+            <label><input type="radio" asp-for="CopiiBool" value="false" /> Nu</label>
         </div>
         <div class="form-group">
             <label>6. Cu ce marime de animal ati fi confortabil? (1-Talie mica, 5-Talie mare)</label>
-            <input type="number" asp-for="PreferredSize" class="form-control" min="1" max="5" />
+            <input type="number" asp-for="Marime" class="form-control" min="1" max="5" />
         </div>
         <div class="form-group">
             <label>7. Cata atentie ii puteti oferi zilnic animalului? (1-Nivel scazut, 5-Nivel ridicat)</label>
-            <input type="number" asp-for="AttentionLevel" class="form-control" min="1" max="5" />
+            <input type="number" asp-for="NivelAtentie" class="form-control" min="1" max="5" />
         </div>
         <div class="form-group">
             <label>8. Ce grupa de varsta preferati pentru animalul dumneavoastra? (1-Tanar, 5-Batran)</label>
-            <input type="number" asp-for="PreferredAgeGroup" class="form-control" min="1" max="5" />
+            <input type="number" asp-for="GrupVarsta" class="form-control" min="1" max="5" />
         </div>
         <div class="form-group">
             <label>9. Cat de important este cat de adaptabil este animalul la mediul inconjurator? (1-Nu este important, 5-Este foarte important)</label>
-            <input type="number" asp-for="AdaptabilityImportance" class="form-control" min="1" max="5" />
+            <input type="number" asp-for="Adaptabilitate" class="form-control" min="1" max="5" />
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
@@ -61,22 +61,22 @@ else
     <div style="text-align: center;">
         <h2 class="recomandare-title">Animale Recomandate</h2>
     </div>
-    @if (ViewBag.RecommendedAnimals != null)
+    @if (ViewBag.AnimaleRec != null)
     {
         <div class="row">
-            @foreach (SmartAdopt.Models.Animal animal in ViewBag.RecommendedAnimals)
+            @foreach (SmartAdopt.Models.Animal animal in ViewBag.AnimaleRec)
             {
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         @Html.Partial("AnimalInfo", animal)
-                        <a class="btn bg-albastru border-dark" href="/Clients/CreateOrder/@animal.idAnimal">Creeaza cerere adoptie</a>
+                        <a class="btn bg-albastru border-dark" href="/Clients/CreareComanda/@animal.idAnimal">Creeaza cerere adoptie</a>
                     </div>
                 </div>
             }
         </div>
     }
     <form asp-action="ResetChestionar" method="post">
-        <button type="submit" class="btn btn-warning">Reset Questionnaire</button>
+        <button type="submit" class="btn btn-warning">Reset Chestionar</button>
     </form>
 }
 
@@ -95,17 +95,15 @@ else
         display: inline-block;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
-
-        .recomandare-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: #3498db;
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
-
+    .recomandare-title::after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background-color: #3498db;
+        margin: 10px auto 0;
+        border-radius: 2px;
+    }
     .chestionar-form {
         max-width: 900px;
         margin: 0 auto;
@@ -115,32 +113,27 @@ else
         color: #f1f1f1;
         font-size: 1.1rem;
     }
-
-        .chestionar-form .form-group {
-            margin-bottom: 25px;
-        }
-
-        .chestionar-form label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-
-        .chestionar-form input[type="radio"] {
-            margin-right: 5px;
-            margin-left: 10px;
-        }
-
-        .chestionar-form select,
-        .chestionar-form input[type="number"] {
-            font-size: 1rem;
-            padding: 8px;
-        }
-
-        .chestionar-form .btn-primary {
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            margin-top: 10px;
-        }
+    .chestionar-form .form-group {
+        margin-bottom: 25px;
+    }
+    .chestionar-form label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+    }
+    .chestionar-form input[type="radio"] {
+        margin-right: 5px;
+        margin-left: 10px;
+    }
+    .chestionar-form select,
+    .chestionar-form input[type="number"] {
+        font-size: 1rem;
+        padding: 8px;
+    }
+    .chestionar-form .btn-primary {
+        font-size: 1.1rem;
+        padding: 10px 20px;
+        margin-top: 10px;
+    }
 </style>

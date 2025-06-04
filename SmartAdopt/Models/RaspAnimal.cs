@@ -7,10 +7,8 @@ namespace SmartAdopt.Models
         [Key]
         public int idRaspAnimal { get; set; }
         public int idRasp { get; set; }
-        public int idAnimal { get; set; }
-
-        // Navigation properties
         public virtual RaspChestionar? RaspChestionar { get; set; }
-        public virtual  Animal? Animal { get; set; }
+        public int idAnimal { get; set; }
+        public virtual Animal? Animal { get; set; }
     }
 }

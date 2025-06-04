@@ -1,0 +1,233 @@
+﻿@model RaportStatisticiViewModel
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-5">
+    <div class="report-header">
+        <h1>SmartAdopt - Admin Raport Statistici Site</h1>
+        <p>Actualizat la data de: @DateTime.Now.ToString("MMMM dd, yyyy hh:mm tt") EEST</p>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Activitate Useri</h3>
+        <div class="row">
+            <div class="card p-4 text-center">
+                <h4>Useri Activi</h4>
+                <h2>@Model.TotalUseri</h2>
+            </div>
+            <div class="card p-4 text-center">
+                <h4>Useri care si-au completat profilul</h4>
+                <div class="circle-progress" style="--percentage: @(Model.TotalUseri > 0 ? Model.UseriCuProfilCompletat * 100.0 / Model.TotalUseri * 3.6 : 0)deg" data-percentage="@(Model.TotalUseri > 0 ? (Model.UseriCuProfilCompletat * 100.0 / Model.TotalUseri).ToString("F1") : "0")"></div>
+                <h2>@Model.UseriCuProfilCompletat</h2>
+            </div>
+            <div class="card p-4 text-center">
+                <h4>Useri care au interactionat cu Blogul</h4>
+                <h2>@Model.UseriCuBlog</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Statistici Recomandari</h3>
+        <div class="row">
+            <div class="card p-4 text-center">
+                <h4>Numar total Recomandari Generate</h4>
+                <h2>@Model.TotalRecomandari</h2>
+            </div>
+            <div class="card p-4">
+                <h4>Top 5 Animale Recomandate</h4>
+                <ul class="list-group">
+                    @foreach (var animal in Model.TopAnimaleRecomandate)
+                    {
+                        <li class="list-group-item">@animal.nume (@animal.specie) - @animal.Numar </li>
+                    }
+                </ul>
+            </div>
+            <div class="card p-4 text-center">
+                <h4>Comenzi datorita Recomandarilor</h4>
+                <h2>@Model.ComenziDinRecomandari</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Date despre Animale</h3>
+        <div class="row">
+            <div class="card p-4 text-center">
+                <h4>Total Animale Disponibile</h4>
+                <h2>@Model.TotalAnimale</h2>
+            </div>
+            <div class="card p-4 text-center">
+                <h4>Total Animale Adoptate</h4>
+                <div class="circle-progress" style="--percentage: @(Model.TotalAnimale > 0 ? Model.TotalAnimaleAdoptate * 100.0 / (Model.TotalAnimale + Model.TotalAnimaleAdoptate)* 3.6 : 0)deg" data-percentage="@(Model.TotalAnimale > 0 ? (Model.TotalAnimaleAdoptate * 100.0 / (Model.TotalAnimale + Model.TotalAnimaleAdoptate)).ToString("F1") : "0")"></div>
+                <h2>@Model.TotalAnimaleAdoptate</h2>
+            </div>
+            <div class="card p-4 text-center">
+                <h4>Animale care nu au fost recomandate pana acum</h4>
+                <h2>@Model.AnimaleNerecomandate.Count</h2>
+                <ul class="list-group">
+                    @foreach (var animal in Model.AnimaleNerecomandate)
+                    {
+                        <li class="list-group-item">@animal.nume (@animal.specie)</li>
+                    }
+                </ul>
+            </div>
+            <div class="card p-4">
+                <h4>Animale per Specie</h4>
+                <div class="chart-container">
+                    <canvas id="speciiChart"></canvas>
+                </div>
+            </div>
+            <div class="card p-4">
+                <h4>Media Atributelor</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">Marime: @Model.AverageAtribute.MarimeMedie.ToString("F1")</li>
+                    <li class="list-group-item">Nivel de Energie: @Model.AverageAtribute.EnergieMedie.ToString("F1")</li>
+                    <li class="list-group-item">Nivel de atentie necesar: @Model.AverageAtribute.AtentieMedie.ToString("F1")</li>
+                    <li class="list-group-item">Adaptabilitatea animalului: @Model.AverageAtribute.AdaptabilitateMedie.ToString("F1")</li>
+                    <li class="list-group-item">Grupa de varsta: @Model.AverageAtribute.GrupaVarstaMedie.ToString("F1")</li>
+                </ul>
+            </div>
+            <div class="card p-4">
+                <h4>Statusul Comenzilor</h4>
+                <div class="chart-container">
+                    <canvas id="comenziStatusChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Chart(document.getElementById('speciiChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.AnimalePeSpecie.Select(s => s.Specie))),
+                datasets: [{
+                    label: 'Total Animale',
+                    data: @Html.Raw(Json.Serialize(Model.AnimalePeSpecie.Select(s => s.Numar))),
+                    backgroundColor: 'rgba(76, 175, 80, 0.6)'
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true } },
+                plugins: { legend: { display: true } },
+                responsive: true,
+                maintainAspectRatio: false 
+            }
+        });
+
+        new Chart(document.getElementById('comenziStatusChart'), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.StatusComenzi.Select(s => s.Stare))),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.StatusComenzi.Select(s => s.Numar))),
+                    backgroundColor: ['#4CAF50', '#FF9800', '#F44336']
+                }]
+            },
+            options: {
+                plugins: { legend: { position: 'bottom' } },
+                responsive: true,
+                maintainAspectRatio: false 
+            }
+        });
+    </script>
+</div>
+
+
+<style>
+    body {
+        background-color: #f4f6f8;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #2c3e50;
+    }
+    .report-header {
+        background-color: #27ae60;
+        padding: 2rem 1rem;
+        border-radius: 12px;
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .report-header h1 {
+        font-size: 2.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    .report-header p {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    h2, h4 {
+        color: #2c3e50;
+    }
+    .section {
+        margin-bottom: 3rem;
+    }
+    .section-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #27ae60;
+        border-bottom: 2px solid #27ae60;
+        padding-bottom: 5px;
+    }
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+    }
+    .card h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #34495e;
+    }
+    .card h2 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #27ae60;
+    }
+    .circle-progress {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: conic-gradient(#27ae60 var(--percentage), #e0e0e0 0);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 10px auto;
+        font-size: 1rem;
+    }
+    .circle-progress::before {
+        content: attr(data-percentage) "%";
+    }
+    .chart-container {
+        width: 100%;
+        max-width: 420px;
+        margin: auto;
+        padding-top: 10px;
+    }
+    canvas {
+        width: 100% !important;
+        height: 230px !important;
+    }
+    .list-group-item {
+        border: none;
+        background-color: transparent;
+        padding: 0.5rem 0;
+        color: #2c3e50;
+        font-size: 1rem;
+    }
+</style>

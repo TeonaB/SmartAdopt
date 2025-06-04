@@ -30,30 +30,25 @@ namespace SmartAdopt.Controllers
             comentariu.descriere = comentariu.descriere;
             try
             {
-                // Verify the Postare exists
                 var postare = await db.Postares.FindAsync(id);
                 if (postare == null)
                 {
-                    TempData["message"] = "Postarea nu a fost găsită.";
+                    TempData["message"] = "Postarea nu a fost gasita.";
                     TempData["messageType"] = "error";
                     return RedirectToAction("Index", "Postares");
                 }
 
-                // Set properties
                 comentariu.idPostare = id;
                 var user = await _userManager.GetUserAsync(User);
                 var client = await db.Clients.FirstOrDefaultAsync(s => s.ApplicationUserId == user.Id);
                 comentariu.idClient = client.idClient;
 
-                // Add the comment to the database
                 db.Comentarius.Add(comentariu);
                 await db.SaveChangesAsync();
                 return RedirectToAction("Show", "Postares", new { id = id });
             }
             catch (Exception)
             {
-                TempData["message"] = "A apărut o eroare la adăugarea comentariului";
-                TempData["messageType"] = "error";
                 return RedirectToAction("Show", "Postares", new { id = id });
             }
 
@@ -62,12 +57,11 @@ namespace SmartAdopt.Controllers
         [Authorize(Roles = "Client, Admin")]
         public async Task<IActionResult> Delete(int id)
         {
-
             var comentariu = await db.Comentarius.FindAsync(id);
             var id2 = comentariu.idPostare;
             if (comentariu == null)
             {
-                TempData["message"] = "Comentariul nu a fost găsit";
+                TempData["message"] = "Comentariul nu a fost gasit";
                 return RedirectToAction("Index", "Animals");
             }
 
@@ -79,7 +73,7 @@ namespace SmartAdopt.Controllers
             }
             catch (Exception ex)
             {
-                TempData["message"] = "A apărut o eroare la ștergerea comentariului: " + ex.Message;
+                TempData["message"] = "A aparut o eroare la stergerea comentariului: " + ex.Message;
             }
 
             return RedirectToAction("Show", "Postares", new { id = id2});

@@ -11,9 +11,9 @@ public static class SeedData
         using (var context = new ApplicationDbContext(
                    serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
         {
-            if (context.Roles.Any()) return; // baza de date contine deja roluri
+            if (context.Roles.Any()) return; 
 
-            // CREAREA ROLURILOR IN BD
+            // CREARE ROLURI
             context.Roles.AddRange(
                 new IdentityRole
                 {
@@ -31,7 +31,7 @@ public static class SeedData
 
             var hasher = new PasswordHasher<ApplicationUser>();
 
-            // CREAREA USERILOR IN BD
+            // CREARE USERI
             context.Users.AddRange(
                 new ApplicationUser
                 {

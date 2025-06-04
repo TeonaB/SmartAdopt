@@ -15,7 +15,7 @@ namespace SmartAdopt.Models
         public string nr_telefon { get; set; }
         public string adresa { get; set; }
 
-        // Navigation properties
+
         public virtual ICollection<Comanda>? Comandas { get; set; }
         public virtual ICollection<Comentariu>? Comentarius { get; set; }
     }

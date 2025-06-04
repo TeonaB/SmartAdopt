@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartAdopt")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+28cdf2df142dd9bcc8b532d5f200b739f6c23b52")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c42b1a643d6b33fcbcf0c4b7d04dee11c2d95498")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartAdopt")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartAdopt")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,9 +1,5 @@
 ﻿@model SmartAdopt.Models.Animal
 
-@{
-    ViewData["Title"] = "Editare Animal";
-}
-
 <div class="mb-4">
     <h2 class="text-center text-white fw-bold">Editare Animal</h2>
 </div>
@@ -19,85 +15,85 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="specie" class="control-label"></label>
+            <label asp-for="specie" class="control-label">Specie</label>
             <input asp-for="specie" class="form-control" />
             <span asp-validation-for="specie" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="rasa" class="control-label"></label>
+            <label asp-for="rasa" class="control-label">Rasa</label>
             <input asp-for="rasa" class="form-control" />
             <span asp-validation-for="rasa" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="descriere" class="control-label"></label>
+            <label asp-for="descriere" class="control-label">Descriere</label>
             <textarea asp-for="descriere" class="form-control"></textarea>
             <span asp-validation-for="descriere" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="varsta" class="control-label"></label>
+            <label asp-for="varsta" class="control-label">Varsta</label>
             <input asp-for="varsta" class="form-control" type="number" min="0" max="20" />
             <span asp-validation-for="varsta" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="nivel_energie" class="control-label"></label>
+            <label asp-for="nivel_energie" class="control-label">Nivel Energie</label>
             <input asp-for="nivel_energie" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="nivel_energie" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="marime" class="control-label"></label>
+            <label asp-for="marime" class="control-label">Marime</label>
             <input asp-for="marime" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="marime" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="nivel_adaptabilitate" class="control-label"></label>
+            <label asp-for="nivel_adaptabilitate" class="control-label">Nivel Adaptabilitate</label>
             <input asp-for="nivel_adaptabilitate" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="nivel_adaptabilitate" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="grupa_varsta" class="control-label"></label>
+            <label asp-for="grupa_varsta" class="control-label">Grupa Varsta</label>
             <input asp-for="grupa_varsta" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="grupa_varsta" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="nivel_atentie_necesara" class="control-label"></label>
+            <label asp-for="nivel_atentie_necesara" class="control-label">Nivel Atentie Necesara</label>
             <input asp-for="nivel_atentie_necesara" class="form-control" type="number" min="1" max="5" />
             <span asp-validation-for="nivel_atentie_necesara" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="vaccinuri" class="control-label"></label>
+            <label asp-for="vaccinuri" class="control-label">Vaccinuri</label>
             <input asp-for="vaccinuri" class="form-control" />
             <span asp-validation-for="vaccinuri" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="tip_alimentatie" class="control-label"></label>
+            <label asp-for="tip_alimentatie" class="control-label">Tip Alimentatie</label>
             <input asp-for="tip_alimentatie" class="form-control" />
             <span asp-validation-for="tip_alimentatie" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="starea_sanatatii" class="control-label"></label>
+            <label asp-for="starea_sanatatii" class="control-label">Starea Sanatatii</label>
             <input asp-for="starea_sanatatii" class="form-control" />
             <span asp-validation-for="starea_sanatatii" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="ultima_verificare_vet" class="control-label"></label>
+            <label asp-for="ultima_verificare_vet" class="control-label">Ultima Verificare Veterinar</label>
             <input asp-for="ultima_verificare_vet" class="form-control" type="date" />
             <span asp-validation-for="ultima_verificare_vet" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="pret" class="control-label"></label>
+            <label asp-for="pret" class="control-label">Pret</label>
             <input asp-for="pret" class="form-control" type="number" step="0.10" min="1.00" />
             <span asp-validation-for="pret" class="text-danger"></span>
         </div>
@@ -108,11 +104,14 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary">Salvează</button>
-            <a class="btn btn-secondary" href="@Url.Action("Index", "Animals")">Înapoi</a>
+            <button type="submit" class="btn btn-primary">Salveaza</button>
+            <a class="btn btn-secondary" href="@Url.Action("Index", "Animals")">Inapoi</a>
         </div>
     </form>
 </div>
+
+
+
 
 <style>
     .title-wrapper {
@@ -121,7 +120,6 @@
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-
     .main-container-dark {
         background-color: rgba(74, 78, 88, 0.85) !important; 
         padding: 20px;
@@ -129,52 +127,43 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         color: #ffffff; 
     }
-
     .form-control {
         background-color: rgba(90, 98, 104, 0.85); 
         border: 1px solid #666; 
         color: #ffffff;
     }
-
-        .form-control:focus {
-            background-color: rgba(90, 98, 104, 0.9); 
-            color: #ffffff;
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
+    .form-control:focus {
+        background-color: rgba(90, 98, 104, 0.9); 
+        color: #ffffff;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
     .form-label {
         font-weight: 500;
         color: #e0e0e0;
     }
-
     .text-light {
         color: #ffffff !important;
     }
-
     .text-danger {
         color: #dc3545 !important;
     }
-
     .btn-primary {
         background-color: #007bff;
         border-color: #007bff;
     }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
     .btn-secondary {
         background-color: #6c757d;
         border-color: #6c757d;
     }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            border-color: #5a6268;
-        }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #5a6268;
+    }
 </style>
 
 @section Scripts {

@@ -146,8 +146,8 @@ namespace SmartAdopt.Areas.Identity.Pages.Account
                         ApplicationUserId = user.Id,
                         idRaspChestionar = 0,
                         CompletedProfile = false,
-                        nr_telefon = " ",
-                        adresa = " "
+                        nr_telefon = "",
+                        adresa = ""
                     };
                     db.Clients.Add(client);
                     db.SaveChanges();
