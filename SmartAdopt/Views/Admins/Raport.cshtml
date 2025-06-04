@@ -1,5 +1,8 @@
 ﻿@model RaportStatisticiViewModel
-
+@{
+    ViewData["Title"] = "Raport de Statistici";
+    ViewData["MetaDescription"] = "Poti vizualiza raportul petshop-ului tau in doar cateva secunde";
+}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="container mt-5">
@@ -72,12 +75,53 @@
                     }
                 </ul>
             </div>
-            <div class="card p-4">
-                <h4>Animale per Specie</h4>
-                <div class="chart-container">
-                    <canvas id="speciiChart"></canvas>
+            @if (ViewBag.IsPdf == false)
+            {
+                <div class="card p-4">
+                    <h4>Animale per Specie</h4>
+                    <div class="chart-container">
+                        <canvas id="speciiChart"></canvas>
+                    </div>
                 </div>
+            }
+            else
+            {
+                <style>
+                    table.table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                        table.table th,
+                        table.table td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        table.table th {
+                            background-color: #f2f2f2;
+                        }
+                </style>
+            <div class="card p-4">
+                <h4>Animale Per Specie</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Specie</th>
+                            <th>Numar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var species in Model.AnimalePeSpecie)
+                        {
+                            <tr>
+                                <td>@species.Specie</td>
+                                <td>@species.Numar</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
+            }
             <div class="card p-4">
                 <h4>Media Atributelor</h4>
                 <ul class="list-group">
@@ -88,15 +132,63 @@
                     <li class="list-group-item">Grupa de varsta: @Model.AverageAtribute.GrupaVarstaMedie.ToString("F1")</li>
                 </ul>
             </div>
-            <div class="card p-4">
-                <h4>Statusul Comenzilor</h4>
-                <div class="chart-container">
-                    <canvas id="comenziStatusChart"></canvas>
+            @if(ViewBag.IsPdf == false)
+            {
+                <div class="card p-4">
+                    <h4>Statusul Comenzilor</h4>
+                    <div class="chart-container">
+                        <canvas id="comenziStatusChart"></canvas>
+                    </div>
                 </div>
+            }
+            else
+            {
+                <style>
+                    table.table {
+                        width: 100%;
+                        border-collapse: collapse;
+                    }
+                        table.table th,
+                        table.table td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        table.table th {
+                            background-color: #f2f2f2;
+                        }
+                </style>
+            <div class="card p-4">
+                <h4>Status Comenzi</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Numar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var status in Model.StatusComenzi)
+                        {
+                            <tr>
+                                <td>@status.Stare</td>
+                                <td>@status.Numar</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
+            }
+            
         </div>
     </div>
 
+    @if (ViewBag.IsPdf == false)
+    {
+        <div class="text-center mb-4">
+            <a asp-action="DownloadRaportAsPdf" asp-controller="Admins" class="btn btn-primary">Download Raport</a>
+        </div>
+    }
     <script>
         new Chart(document.getElementById('speciiChart'), {
             type: 'bar',

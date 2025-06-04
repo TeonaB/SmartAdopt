@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "JwQ66L/6NMF2akamkn5zzzVsJj/xFFPXeDRoUMqo1p4=",
+  "Hash": "ywjOrldwnH1cueKMrbhgu9rmtrxDAvhRwXVGdX8aMYk=",
   "Source": "SmartAdopt",
   "BasePath": "_content/SmartAdopt",
   "Mode": "Default",
@@ -2390,6 +2390,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Identity": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\robots.txt",
+      "SourceId": "SmartAdopt",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\",
+      "BasePath": "_content/SmartAdopt",
+      "RelativePath": "robots.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\robots.txt"
     }
   ]
 }

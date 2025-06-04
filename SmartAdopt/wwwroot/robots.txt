@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /Identity/
+Sitemap: https://localhost:7249/sitemap.xml

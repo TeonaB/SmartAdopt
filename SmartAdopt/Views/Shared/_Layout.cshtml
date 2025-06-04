@@ -9,6 +9,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SmartAdopt</title>
+    <meta name="description" content="@(ViewData["MetaDescription"] ?? "Gasiti-va animalul perfect in cateva minute!")" />
+    <meta name="keywords" content="pet adoption, adopt a pet, recomandari animale, petshop, caini, pisici, animale, blog, comunitate de animale" />
+    <meta name="author" content="Teona Bobic" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SmartAdopt.styles.css" asp-append-version="true" />
@@ -86,7 +89,7 @@
         </nav>
     </header>
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>

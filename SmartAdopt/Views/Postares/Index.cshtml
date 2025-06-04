@@ -1,4 +1,8 @@
-﻿@if (ViewBag.Message != null)
+﻿@{
+    ViewData["Title"] = "Blog despre animale";
+    ViewData["MetaDescription"] = "Vizualizeaza blogul despre animale si afla informatii importante despre ele";
+}
+@if (ViewBag.Message != null)
 {
     <div class="alert-container mb-5">
         <div class="alert alert-custom d-flex align-items-center justify-content-between rounded-3 p-3"

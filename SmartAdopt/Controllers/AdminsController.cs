@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DinkToPdf.Contracts;
+using DinkToPdf;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using SmartAdopt.Data;
 using SmartAdopt.Models;
@@ -15,14 +21,20 @@ namespace SmartAdopt.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext db;
+        private readonly ICompositeViewEngine _viewEngine;
+        private readonly ITempDataProvider _tempDataProvider;
+        private readonly IServiceProvider _serviceProvider;
         private IWebHostEnvironment _env;
 
-        public AdminsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment env)
+        public AdminsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<ApplicationUser> signInManager, IWebHostEnvironment env, ICompositeViewEngine viewEngine, ITempDataProvider tempDataProvider, IServiceProvider serviceProvider)
         {
             db = context;
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _viewEngine = viewEngine;
+            _tempDataProvider = tempDataProvider;
+            _serviceProvider = serviceProvider;
             _env = env;
         }
 
@@ -722,6 +734,14 @@ namespace SmartAdopt.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Raport()
         {
+            ViewBag.IsPdf = false;
+            var viewModel = await GetRaport();
+            return View(viewModel);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<RaportStatisticiViewModel> GetRaport()
+        {
             // Pentru utilizatori
             var totalUtilizatoriInregistrati = await db.Clients.CountAsync();
             var utilizatoriCuProfilComplet = await db.Clients.CountAsync(c => c.CompletedProfile == true);
@@ -780,7 +800,7 @@ namespace SmartAdopt.Controllers
                 .Select(g => new { Stare = g.Key, Numar = g.Count() })
                 .ToListAsync();
 
-            var model = new RaportStatisticiViewModel
+            return new RaportStatisticiViewModel
             {
                 TotalUseri = totalUtilizatoriInregistrati,
                 UseriCuProfilCompletat = utilizatoriCuProfilComplet,
@@ -796,7 +816,62 @@ namespace SmartAdopt.Controllers
                 StatusComenzi = statusuriComenzi.Cast<dynamic>().ToList()
             };
 
-            return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DownloadRaportAsPdf()
+        {
+            var viewModel = await GetRaport();
+            ViewBag.IsPdf = true;
+            // Transform html in string
+            var htmlContent = await RenderViewToStringAsync("Raport", viewModel);
+
+            // Configurez setarile pentru pdf
+            var globalSettings = new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4
+            };
+            var objectSettings = new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = htmlContent,
+                WebSettings =
+                {
+                    DefaultEncoding = "utf-8",
+                    EnableJavascript = true,
+                    LoadImages = true
+                }
+            };
+            var pdf = new HtmlToPdfDocument()
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+
+            // Convertim Html in Pdf
+            var converter = _serviceProvider.GetRequiredService<IConverter>();
+            var pdfBytes = converter.Convert(pdf);
+
+            return File(pdfBytes, "application/pdf", "Raport.pdf");
+        }
+
+
+        private async Task<string> RenderViewToStringAsync(string viewName, object model)
+        {
+            var viewResult = _viewEngine.FindView(ControllerContext, viewName, false);
+            using var writer = new StringWriter();
+            var viewContext = new ViewContext(
+            ControllerContext,
+                viewResult.View,
+                new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { Model = model },
+                new TempDataDictionary(HttpContext, _tempDataProvider),
+                writer,
+                new HtmlHelperOptions()
+            );
+            await viewResult.View.RenderAsync(viewContext);
+            return writer.ToString();
         }
 
     }
