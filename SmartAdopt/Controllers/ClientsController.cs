@@ -96,7 +96,7 @@ namespace SmartAdopt.Controllers
                 }
 
                 db.SaveChanges();
-                TempData["SuccessMessage"] = "Numar de telefon updatat";
+                TempData["SuccessMessage"] = "Numar de telefon actualizat";
                 return RedirectToAction("Index", "Clients");
             }
         }
@@ -145,7 +145,7 @@ namespace SmartAdopt.Controllers
                     return RedirectToAction("EditAdresa", "Students");
                 }
                 db.SaveChanges();
-                TempData["SuccessMessage"] = "Adresa personala updatata";
+                TempData["SuccessMessage"] = "Adresa personala actualizata";
                 return RedirectToAction("Index", "Clients");
             }
         }

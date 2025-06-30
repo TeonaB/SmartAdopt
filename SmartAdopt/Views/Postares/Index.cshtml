@@ -70,6 +70,35 @@
 </div>
 
 
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, search = ViewBag.SearchString })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo; Previous</span>
+                    </a>
+                </li>
+            }
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { page = i, search = ViewBag.SearchString })">@i</a>
+                </li>
+            }
+            @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, search = ViewBag.SearchString })" aria-label="Next">
+                        <span aria-hidden="true">Next &raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>
+
 
 <style>
     .title-wrapper {
@@ -198,5 +227,20 @@
     .btn-success:hover {
         background-color: #45a049;
         border-color: #45a049;
+    }
+    .pagination {
+        font-size: 1rem;
+    }
+    .pagination .page-item.active .page-link {
+        background-color: #4da8da;
+        border-color: #2e86ab;
+        color: white;
+    }
+    .pagination .page-link {
+         color: #4da8da;
+    }
+    .pagination .page-link:hover {
+         background-color: #e9ecef;
+         color: #2e86ab;
     }
 </style>

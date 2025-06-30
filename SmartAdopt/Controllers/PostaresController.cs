@@ -21,8 +21,12 @@ namespace SmartAdopt.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
+            int pageSize = 4;
+            int pageNumber = page ?? 1;
+            if (pageNumber < 1) pageNumber = 1;
+
             var search = "";
             var postari = db.Postares.Include(p => p.ApplicationUser)
                 .OrderByDescending(p => p.data_postarii);
@@ -38,8 +42,19 @@ namespace SmartAdopt.Controllers
                 .OrderByDescending(p => p.data_postarii);
             }
 
+            int totalItems = postari.Count();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            if (pageNumber > totalPages && totalPages > 0) pageNumber = totalPages;
+
+            var postari2 = postari
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
             ViewBag.SearchString = search;
-            ViewBag.Postari = postari;
+            ViewBag.Postari = postari2;
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = totalPages;
 
             if (TempData.ContainsKey("message"))
             {

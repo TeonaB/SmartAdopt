@@ -20,8 +20,12 @@ namespace SmartAdopt.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
+            int pageSize = 6; 
+            int pageNumber = page ?? 1;
+            if (pageNumber < 1) pageNumber = 1; 
+
             var search = "";
             var animals = db.Animals.OrderBy(a => a.pret).ThenBy(a => a.nume);
             //searchBar
@@ -35,8 +39,19 @@ namespace SmartAdopt.Controllers
                 animals = db.Animals.Where(animal => animalIds.Contains(animal.idAnimal)).OrderBy(a => a.pret).ThenBy(a => a.nume);
             }
 
+            int totalItems = animals.Count();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            if (pageNumber > totalPages && totalPages > 0) pageNumber = totalPages; 
+
+            var animals2 = animals
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
             ViewBag.SearchString = search;
-            ViewBag.Animals = animals;
+            ViewBag.Animals = animals2;
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = totalPages;
 
             if (TempData.ContainsKey("message"))
             {

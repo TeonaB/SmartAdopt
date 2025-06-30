@@ -461,6 +461,66 @@ namespace SmartAdopt.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditClient(int id)
+        {
+            var client = await db.Clients
+                .Include(c => c.ApplicationUser)
+                .FirstOrDefaultAsync(c => c.idClient == id);
+
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            return View(client);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditClient(int id, Client client)
+        {
+            if (id != client.idClient)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existingClient = await db.Clients
+                        .Include(c => c.ApplicationUser)
+                        .FirstOrDefaultAsync(c => c.idClient == id);
+
+                    if (existingClient == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingClient.nr_telefon = client.nr_telefon;
+                    existingClient.adresa = client.adresa;
+
+                    existingClient.ApplicationUser.nume = client.ApplicationUser.nume;
+                    existingClient.ApplicationUser.prenume = client.ApplicationUser.prenume;
+
+                    db.Update(existingClient);
+                    await db.SaveChangesAsync();
+
+                    TempData["message"] = "Clientul a fost actualizat cu succes!";
+                    TempData["messageType"] = "success";
+                    return RedirectToAction("ViewClient", new { id = client.ApplicationUserId });
+                }
+                catch
+                {
+                    TempData["message"] = "A apărut o eroare la actualizarea clientului.";
+                    TempData["messageType"] = "error";
+                }
+            }
+            return View(client);
+        }
+
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteUser(string id)
         {
             try

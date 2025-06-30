@@ -1,0 +1,120 @@
+﻿@model SmartAdopt.Models.Client
+
+<h2>Editare Client</h2>
+
+@if (TempData["message"] != null)
+{
+    <div class="alert @(TempData["messageType"] == "error" ? "alert-danger" : "alert-success")" role="alert">
+        @TempData["message"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="EditClient" asp-controller="Admins" method="post">
+            <input type="hidden" asp-for="idClient" />
+            <input type="hidden" asp-for="ApplicationUserId" />
+
+            <h4 class="card-title">Informații Utilizator</h4>
+            <div class="mb-3">
+                <label asp-for="ApplicationUser.nume" class="form-label">Nume</label>
+                <input asp-for="ApplicationUser.nume" class="form-control" />
+                <span asp-validation-for="ApplicationUser.nume" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ApplicationUser.prenume" class="form-label">Prenume</label>
+                <input asp-for="ApplicationUser.prenume" class="form-control" />
+                <span asp-validation-for="ApplicationUser.prenume" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ApplicationUser.Email" class="form-label">Email</label>
+                <input asp-for="ApplicationUser.Email" class="form-control" disabled />
+                <small class="form-text text-muted">Email-ul nu poate fi modificat.</small>
+            </div>
+
+            <h4 class="card-title">Detalii Client</h4>
+            <div class="mb-3">
+                <label asp-for="nr_telefon" class="form-label">Numar Telefon</label>
+                <input asp-for="nr_telefon" class="form-control" />
+                <span asp-validation-for="nr_telefon" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="adresa" class="form-label">Adresa</label>
+                <input asp-for="adresa" class="form-control" />
+                <span asp-validation-for="adresa" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-edit-client">Salveaza Modificarile</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    .card {
+        background-color: #ffffff; /* Ensure card background is white */
+    }
+
+    .card-body {
+        color: #333333; /* Dark text for all content in card-body */
+    }
+
+    .form-label {
+        color: #333333; /* Dark color for labels */
+        font-weight: 500;
+    }
+
+    .form-control {
+        color: #333333; /* Dark text for input fields */
+        background-color: #f8f9fa; /* Light gray background for inputs */
+        border: 1px solid #ced4da; /* Bootstrap default border */
+    }
+
+        .form-control:disabled {
+            background-color: #e9ecef; /* Slightly darker for disabled email field */
+            color: #6c757d; /* Muted text for disabled field */
+        }
+
+    .text-muted {
+        color: #6c757d !important; /* Ensure muted text is visible */
+    }
+
+    .text-danger {
+        color: #dc3545 !important; /* Ensure validation errors are visible */
+    }
+
+    .btn-edit-client {
+        background-color: #4da8da;
+        color: white;
+        border: 1px solid #2e86ab;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-edit-client:hover {
+            background-color: #66b3e0;
+            color: white;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: 1px solid #5a6268;
+        color: white;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #7b858f;
+            color: white;
+        }
+</style>

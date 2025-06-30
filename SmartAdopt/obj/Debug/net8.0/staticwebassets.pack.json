@@ -13,8 +13,44 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\WIN_20241127_15_17_38_Pro.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\WIN_20241127_15_17_38_Pro.jpg"
+    },
+    {
       "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\WIN_20241127_15_17_44_Pro.jpg",
       "PackagePath": "staticwebassets\\images\\animals\\WIN_20241127_15_17_44_Pro.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\caine.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\caine.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\caine2.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\caine2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\caine3.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\caine3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\iepure.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\iepure.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\pagagal3.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\pagagal3.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\papagal.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\papagal.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\papagal2.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\papagal2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\animals\\pisica.jpg",
+      "PackagePath": "staticwebassets\\images\\animals\\pisica.jpg"
     },
     {
       "Id": "C:\\Users\\Teona\\Desktop\\SmartAdopt\\SmartAdopt\\wwwroot\\images\\login.png",
